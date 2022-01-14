@@ -21,6 +21,8 @@ mix.copy('node_modules/@coreui/chartjs/dist/css/coreui-chartjs.css', 'public/css
 mix.copy('node_modules/cropperjs/dist/cropper.css', 'public/css');
 //main css
 mix.sass('resources/sass/style.scss', 'public/css');
+mix.sass('resources/sass/select2.scss', 'public/css');
+mix.sass('resources/sass/select2-bootstrap.scss', 'public/css');
 
 //************** SCRIPTS ****************** 
 // general scripts
@@ -40,6 +42,8 @@ mix.copy('resources/js/coreui/charts.js', 'public/js');
 mix.copy('resources/js/coreui/widgets.js', 'public/js');
 mix.copy('resources/js/coreui/popovers.js', 'public/js');
 mix.copy('resources/js/coreui/tooltips.js', 'public/js');
+mix.copy('resources/js/jquery.js', 'public/js');
+mix.copy('resources/js/select2.js', 'public/js');
 // details scripts admin-panel
 mix.js('resources/js/coreui/menu-create.js', 'public/js');
 mix.js('resources/js/coreui/menu-edit.js', 'public/js');

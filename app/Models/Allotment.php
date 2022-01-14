@@ -19,11 +19,12 @@ class Allotment extends Model
         return $this->belongsTo('App\Models\Office', 'office_id');
     }
 
-    public function monthly_allocation($month, $year = null)
+    public function monthly_allocation($office_id, $month, $year = null)
     {
         $year = $year == null ? date('Y') : $year;
         return $this->where('month', $month)
         ->where('year', $year)
+        ->where('office_id', $office_id)
         ->sum('amount');
     }
 

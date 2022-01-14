@@ -39,6 +39,19 @@
     <link href="{{ asset('css/flag-icon.min.css') }}" rel="stylesheet"> <!-- icons -->
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/select2-bootstrap.css') }}" rel="stylesheet">
+    <style>
+      .select2-container--bootstrap {
+        display: inline-block;
+      }
+      .select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+        text-align: left !important;
+      }
+      .select2-container {
+        vertical-align: top;
+      }
+    </style>
 
     @yield('css')
 
@@ -93,6 +106,16 @@
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>
     <script src="{{ asset('js/coreui-utils.js') }}"></script>
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/select2.js') }}"></script>
+    <script>
+      $(document).ready(function(){
+        $('#office_id').select2({
+          "theme" : 'bootstrap',
+          placeholder: "Select office"
+        });
+      })
+    </script>
     @yield('javascript')
 
 

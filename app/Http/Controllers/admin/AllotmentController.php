@@ -26,9 +26,16 @@ class AllotmentController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('dashboard.allotments.index',['allotments' => Allotment::all()]);
+        $offices = Office::all();
+        $query = Allotment::select('*');
+        $office_id = $request->input('office_id');
+        if($office_id!=''){
+            $query = $query->where('office_id', $office_id);
+        }
+        $allotments = $query->orderBy('month', 'asc')->get();
+        return view('dashboard.allotments.index',['allotments' => $allotments, 'offices' => $offices]);
     }
 
     /**
@@ -69,7 +76,7 @@ class AllotmentController extends Controller
         $transaction->type = 'allotment';
         $transaction->recepient = $allotment->office_id;
         $transaction->amount = $allotment->amount;
-        $transaction->ending_balance = $allotment->monthly_allocation($allotment->month, $allotment->year);
+        $transaction->ending_balance = $allotment->monthly_allocation($allotment->office_id, $allotment->month, $allotment->year);
         $transaction->remarks = $allotment->remarks;
         $transaction->transaction_date = $allotment->created_at;
         $transaction->save();
@@ -115,7 +122,7 @@ class AllotmentController extends Controller
         $transaction = Transaction::find($allotment->transaction->id);
         $transaction->recepient = $allotment->office_id;
         $transaction->amount = $allotment->amount;
-        $transaction->ending_balance = $allotment->monthly_allocation($allotment->month, $allotment->year);
+        $transaction->ending_balance = $allotment->monthly_allocation($allotment->office_id, $allotment->month, $allotment->year);
         $transaction->remarks = $allotment->remarks;
         $transaction->save();
 

@@ -7,18 +7,32 @@
             <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
                 <div class="card">
-                  <form class="form-horizontal" action="{{route('allotment.store')}}" method="post">
+                  <form class="form-horizontal" action="{{route('expense.store')}}" method="post">
                   @csrf
                     <div class="card-header">
-                      <h5><i class="fa fa-align-justify"></i>{{ __('Create Allotment') }}</h5></div>
+                      <h5><i class="fa fa-align-justify"></i>{{ __('Add new expense') }}</h5></div>
                     <div class="card-body">
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="transaction_date">Transaction Date</label>
+                          <div class="col-md-9">
+                          <input type="date" class="form-control" name="transaction_date" id="transaction_date" value="{{date('Y-m-d')}}" required/>
+                          <span class="help-block">Please select transaction date</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="account_code">Account Code</label>
+                            <div class="col-md-9">
+                            <input type="text" class="form-control" name="account_code" value="{{$account_code}}" required/>
+                            <span class="help-block">Auto-generated account code</span>
+                            </div>
+                          </div>
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="year">Year</label>
                             <div class="col-md-9">
                             <select name="year" id="year" class="form-control" required>
                               <option value="">-----------</option>
-                              @for($i = 2021; $i < date('Y'); $i++)
-                              <option selected>{{$i}}</option>
+                              @for($i = 2021; $i <= date('Y'); $i++)
+                              <option {{date('Y') == $i ? 'selected' : ''}}>{{$i}}</option>
                               @endfor
 
                             </select>  
@@ -50,10 +64,31 @@
                             </div>
                           </div>
                           <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="office_allotment_balance">Allotment Available</label>
+                            <div class="col-md-9">
+                            <input type="number" id="office_allotment_balance" class="form-control" disabled/>
+                            <span class="help-block">Office allotment balance</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="expense_class">Expense Class</label>
+                            <div class="col-md-9">
+                            <input type="text" class="form-control" name="expense_class" id="expense_class" required/>
+                            <span class="help-block">Please enter expense class</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="amount">Amount</label>
                             <div class="col-md-9">
-                            <input type="number" class="form-control" name="amount" required/>
+                            <input type="number" class="form-control" name="amount" id="amount" required/>
                             <span class="help-block">Please enter amount</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="ending_balance">Ending Balance</label>
+                            <div class="col-md-9">
+                            <input type="number" class="form-control" name="ending_balance" id="ending_balance" readonly required/>
+                            <span class="help-block">Allotment available after the amount</span>
                             </div>
                           </div>
                           <div class="form-group row">
@@ -79,6 +114,27 @@
 
 
 @section('javascript')
-
+  <script>
+    jQuery(document).ready(function($){
+     $('#office_id').change( function(e){
+       var office_id = $("#office_id").val();
+       var month = $("#month").val();
+       var year = $("#year").val();
+      $.ajax({
+        url : "{{route('expense.get_office_allotment_balance')}}?office_id=" + office_id + "&month=" + month + "&year=" + year,
+        method: "GET",
+        success: function(data){
+          $("#office_allotment_balance").val(data);
+          $("#amount").attr('max', data);
+        }
+      })
+     });
+     $('#amount').on('keyup',function(e){
+       var amount = $(this).val();
+       var balance =  $("#office_allotment_balance").val();
+        $("#ending_balance").val(balance - amount);
+     });
+    });
+  </script>
 @endsection
 

@@ -3,6 +3,8 @@
     "/js/media-cropp.js": "/js/media-cropp.js",
     "/js/menu-create.js": "/js/menu-create.js",
     "/css/style.css": "/css/style.css",
+    "/css/select2.css": "/css/select2.css",
+    "/css/select2-bootstrap.css": "/css/select2-bootstrap.css",
     "/js/menu-edit.js": "/js/menu-edit.js",
     "/css/coreui-chartjs.css": "/css/coreui-chartjs.css",
     "/css/cropper.css": "/css/cropper.css",
@@ -18,6 +20,8 @@
     "/js/widgets.js": "/js/widgets.js",
     "/js/popovers.js": "/js/popovers.js",
     "/js/tooltips.js": "/js/tooltips.js",
+    "/js/jquery.js": "/js/jquery.js",
+    "/js/select2.js": "/js/select2.js",
     "/css/free.min.css": "/css/free.min.css",
     "/css/brand.min.css": "/css/brand.min.css",
     "/css/flag.min.css": "/css/flag.min.css"

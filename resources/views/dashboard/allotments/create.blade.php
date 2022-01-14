@@ -17,8 +17,8 @@
                             <div class="col-md-9">
                             <select name="year" id="year" class="form-control" required>
                               <option value="">-----------</option>
-                              @for($i = 2021; $i < date('Y'); $i++)
-                              <option selected>{{$i}}</option>
+                              @for($i = 2021; $i <= date('Y'); $i++)
+                              <option {{$i == date('Y') ? 'selected' : ''}}>{{$i}}</option>
                               @endfor
 
                             </select>  

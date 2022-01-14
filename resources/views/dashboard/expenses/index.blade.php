@@ -10,7 +10,34 @@
                     <div class="card-header">
                       <h5><i class="fa fa-align-justify"></i>{{ __('Expenses') }}</h5></div>
                     <div class="card-body">
-                        <a href="{{route('allotment.create')}}" class="btn btn-primary btn-sm mb-2"><i class="c-icon cil-plus float-left mr-2"></i> New Expense</a>
+
+                        <div class="float-left w-50">
+                        <a href="{{route('expense.create')}}" class="btn btn-primary btn-sm mb-2"><i class="c-icon cil-plus float-left mr-2"></i> New Expense</a>
+                        </div>
+                        <div class="float-right w-50 text-right mb-3">
+                          <form action="" method="GET" id="frmFilter">
+                          <input type="text" class="form-control d-inline-block" style="max-width: 300px" placeholder="Search by account code / budget" value="{{@$_GET['s']}}" name="s" />
+                          <select class="form-control d-inline-block" style="max-width: 200px" id="office_id" name="office_id">
+                            <option value="">Office</option>
+                            @foreach($offices as $office)
+                            <option value="{{$office->id}}" {{@$_GET['office_id'] == $office->id ? 'selected' : ''}}>{{$office->name}}</option>
+                            @endforeach
+                          </select>
+                          <select class="form-control d-inline-block" style="max-width: 160px" name="m" id="month">
+                            <option value="">-----</option>
+                            @php($sm = isset($_GET['m']) ? $_GET['m'] : date('m'))
+                            @foreach(range(1, 12) as $m)
+                                <option value="{{$m}}" {{$m == $sm ? 'selected' : ''}}>{{date('F', mktime(0, 0, 0, $m, 1))}}</option>
+                              @endforeach
+                          </select>
+                          <select class="form-control d-inline-block" style="max-width: 100px" name="y" id="year">
+                           @php($sy = isset($_GET['y']) ? $_GET['y'] : date('Y'))
+                            @for($i = 2021; $i <= date('Y'); $i++)
+                            <option {{$sy == $i ? 'selected' : ''}}>{{$i}}</option>
+                            @endfor
+                          </select>
+                          </form>
+                        </div>
                         <table class="table table-responsive-sm table-striped">
                         <thead>
                           <tr>
@@ -25,7 +52,19 @@
                           </tr>
                         </thead>
                         <tbody>
-                         
+                            @foreach($expenses as $expense)
+                              <tr>
+                                <td>{{$expense->account_code}}</td>
+                                <td>{{$expense->office->name}}</td>
+                                <td>{{$expense->expense_class}}</td>
+                                <td>{{number_format($expense->transaction->amount, 2)}}</td>
+                                <td>{{number_format($expense->transaction->ending_balance, 2)}}</td>
+                                <td>{{$expense->transaction->remarks}}</td>
+                                <td>{{$expense->transaction->transaction_date}}</td>
+                                <td><a class="btn btn-sm btn-primary" href="{{route('expense.edit',['id' => $expense->id])}}">Edit</a>
+                                <a class="btn btn-sm btn-danger" href="{{route('expense.delete',['id' => $expense->id])}}">Delete</a></td>
+                              </tr>
+                            @endforeach
                         </tbody>
                       </table>
                     </div>
@@ -39,6 +78,13 @@
 
 
 @section('javascript')
-
+<script>
+  $(document).ready(function(){
+    $("#office_id, #month, #year").change(function(){
+      $("input[name=s]").val('');
+      $("#frmFilter").submit();
+    });
+  })
+</script>
 @endsection
 

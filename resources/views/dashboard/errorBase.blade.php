@@ -47,6 +47,7 @@
 
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.js') }}"></script>
 
     @yield('javascript')
 

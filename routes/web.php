@@ -15,7 +15,6 @@ Route::group(['middleware' => ['get.menu']], function () {
     
 
     Route::group(['middleware' => ['role:user', 'auth']], function () {
-        Route::get('/', function () {           return view('dashboard.homepage'); });
         Route::get('/colors', function () {     return view('dashboard.colors'); });
         Route::get('/typography', function () { return view('dashboard.typography'); });
         Route::get('/charts', function () {     return view('dashboard.charts'); });
@@ -94,6 +93,17 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::get('allotments/delete/{id}',        'admin\AllotmentController@delete')->name('allotment.delete');
         Route::post('allotments/update/{id}',        'admin\AllotmentController@update')->name('allotment.update');
         Route::get('allotments/delete/{id}',        'admin\AllotmentController@delete')->name('allotment.delete');
+
+        Route::get('/', 'admin\DashboardController@index')->name('dashboard.index');
+
+        Route::get('expenses', 'admin\ExpenseController@index')->name('expense.index');
+        Route::get('expenses/create',        'admin\ExpenseController@create')->name('expense.create');
+        Route::post('expenses/store',        'admin\ExpenseController@store')->name('expense.store');
+        Route::get('expenses/edit/{id}',        'admin\ExpenseController@edit')->name('expense.edit');
+        Route::get('expenses/delete/{id}',        'admin\ExpenseController@delete')->name('expense.delete');
+        Route::post('expenses/update/{id}',        'admin\ExpenseController@update')->name('expense.update');
+        Route::get('expenses/delete/{id}',        'admin\ExpenseController@delete')->name('expense.delete');
+        Route::get('expenses/get_office_allotment_balance',        'admin\ExpenseController@get_office_allotment_balance')->name('expense.get_office_allotment_balance');
 
         Route::resource('roles',        'RolesController');
         Route::resource('mail',        'MailController');
