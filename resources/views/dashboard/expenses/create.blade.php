@@ -19,11 +19,18 @@
                           <span class="help-block">Please select transaction date</span>
                           </div>
                         </div>
-                        <div class="form-group row">
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="expense_id">ID</label>
+                            <div class="col-md-9">
+                            <input type="text" class="form-control" name="expense_id" value="{{$expense_id}}" required/>
+                            <span class="help-block">Auto-generated ID</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="account_code">Account Code</label>
                             <div class="col-md-9">
-                            <input type="text" class="form-control" name="account_code" value="{{$account_code}}" required/>
-                            <span class="help-block">Auto-generated account code</span>
+                            <input type="text" class="form-control" name="account_code" required/>
+                            <span class="help-block"></span>
                             </div>
                           </div>
                           <div class="form-group row">

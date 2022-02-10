@@ -24,7 +24,7 @@ class Expense extends Model
         return $this->hasOne('App\Models\Transaction', 'reference_id');
     }
 
-    public static function generate_account_code(){
+    public static function generate_expense_id(){
         $m = date('m');
         $y = date('Y');
         $d = date('d');

@@ -62,7 +62,7 @@ class ExpenseController extends Controller
     public function create()
     {
         $offices = Office::all();
-        return view('dashboard.expenses.create',['offices' => $offices, 'account_code' => Expense::generate_account_code()]);
+        return view('dashboard.expenses.create',['offices' => $offices, 'expense_id' => Expense::generate_expense_id()]);
     }
 
      /**

@@ -26,7 +26,7 @@
                                 <label>Applies to date</label>
                                 <input type="date" class="form-control" name="applies_to_date" required/>
                             </div>
-
+u
                             <div class="form-group row">
                                 <label>Status</label>
                                 <select class="form-control" name="status_id">

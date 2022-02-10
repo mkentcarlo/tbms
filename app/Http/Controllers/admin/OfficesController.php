@@ -27,7 +27,17 @@ class OfficesController extends Controller
      */
     public function index()
     {
-        return view('dashboard.offices.index',['offices' => Office::all()]);
+        return view('dashboard.offices.index',['offices' => OfficeCategory::all()]);
+    }
+
+    /**
+     * Show the offices list.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function expense_classes()
+    {
+        return view('dashboard.offices.expense_classes',['expense_classes' => Office::all()]);
     }
     
 
