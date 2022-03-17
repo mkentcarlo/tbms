@@ -23,6 +23,7 @@ mix.copy('node_modules/cropperjs/dist/cropper.css', 'public/css');
 mix.sass('resources/sass/style.scss', 'public/css');
 mix.sass('resources/sass/select2.scss', 'public/css');
 mix.sass('resources/sass/select2-bootstrap.scss', 'public/css');
+mix.copy('resources/sass/bootstrap-datatable.css', 'public/css');
 
 //************** SCRIPTS ****************** 
 // general scripts
@@ -44,6 +45,9 @@ mix.copy('resources/js/coreui/popovers.js', 'public/js');
 mix.copy('resources/js/coreui/tooltips.js', 'public/js');
 mix.copy('resources/js/jquery.js', 'public/js');
 mix.copy('resources/js/select2.js', 'public/js');
+mix.copy('resources/js/datatable.js', 'public/js');
+mix.copy('resources/js/typeahead.js', 'public/js');
+mix.copy('resources/js/datatable-bootstrap.js', 'public/js');
 // details scripts admin-panel
 mix.js('resources/js/coreui/menu-create.js', 'public/js');
 mix.js('resources/js/coreui/menu-edit.js', 'public/js');

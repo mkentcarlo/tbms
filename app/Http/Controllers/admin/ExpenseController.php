@@ -5,8 +5,10 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Expense;
+use App\Models\Allotment;
 use App\Models\Office;
 use App\Models\Transaction;
+use App\Models\OfficeCategory;
 
 
 class ExpenseController extends Controller
@@ -62,7 +64,14 @@ class ExpenseController extends Controller
     public function create()
     {
         $offices = Office::all();
-        return view('dashboard.expenses.create',['offices' => $offices, 'expense_id' => Expense::generate_expense_id()]);
+        $categories = OfficeCategory::where('parent_id', 0)->get();
+        return view('dashboard.expenses.create',['offices' => $offices, 'categories' => $categories, 'expense_id' => Expense::generate_expense_id()]);
+    }
+
+    public function print($id)
+    {
+        $expense = Expense::find($id);
+        return view('dashboard.expenses.print', ['expense' => $expense]);
     }
 
      /**
@@ -77,7 +86,6 @@ class ExpenseController extends Controller
             'month'       => 'required',
             'office_id'       => 'required',
             'amount'       => 'required',
-            'expense_class'       => 'required',
             'account_code'       => 'required',
         ]);
 
@@ -88,20 +96,24 @@ class ExpenseController extends Controller
         $expense->amount = $request->input('amount');
         $expense->remarks = $request->input('remarks');
         $expense->account_code = $request->input('account_code');
-        $expense->expense_class = $request->input('expense_class');
+        $expense->expense_class = $request->input('office_id');
         $expense->save();
 
         $transaction = new Transaction();
         $transaction->reference_id = $expense->id;
         $transaction->type = 'expense';
-        $transaction->recepient = $expense->office_id;
+        $transaction->recepient = $expense->office_id; 
         $transaction->amount = $expense->amount;
         $transaction->ending_balance = $request->input('ending_balance');
+        $transaction->expense_total = $request->input('total_expenses');
+        $transaction->allotment_total_quarter = $request->input('total_allotment_quarter');
+        $transaction->allotment_available = $request->input('allotment_available');
         $transaction->remarks = $expense->remarks;
         $transaction->transaction_date = $request->input('transaction_date');
         $transaction->save();
+        $print_link = route('expense.print', ['id' => $expense->id]);
 
-        $request->session()->flash('message', 'Successfully added expense.');
+        $request->session()->flash('message', 'Successfully added expense. <a class="print" href="'.$print_link.'">Click here</a> to print.');
         return redirect()->route('expense.index');
     }
 
@@ -172,7 +184,15 @@ class ExpenseController extends Controller
 
     public function get_office_allotment_balance(Request $request)
     {
-        return Expense::get_allotment_balance($request->input('office_id'), $request->input('month'), $request->input('year'));
+        $allotment = new Allotment();
+        $total_allotment_quarter = $allotment->quarterly_allocation($request->input('office_id'), $request->input('month'), $request->input('year'));
+        $total_expenses = Expense::get_total_expenses($request->input('office_id'));
+        $total_allotment_balance = Expense::get_allotment_balance($request->input('office_id'), $request->input('month'), $request->input('year'));
+        return response()->json([
+            'total_allotment_quarter' => $total_allotment_quarter,
+            'total_expenses' => $total_expenses,
+            'total_allotment_balance' => $total_allotment_balance
+        ]);
     }
     
     

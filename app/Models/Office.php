@@ -18,4 +18,9 @@ class Office extends Model
     {
         return $this->belongsTo('App\Models\OfficeCategory', 'office_category_id');
     }
+
+    public function getAppropriation($year)
+    {
+        return Allotment::where('year', $year)->where('month', '0')->sum('amount');
+    }
 }

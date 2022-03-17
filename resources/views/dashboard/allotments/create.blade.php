@@ -10,9 +10,13 @@
                   <form class="form-horizontal" action="{{route('allotment.store')}}" method="post">
                   @csrf
                     <div class="card-header">
-                      <h5><i class="fa fa-align-justify"></i>{{ __('Create Allotment') }}</h5></div>
+                      <h5><i class="fa fa-align-justify"></i>{{ __('Create') }}</h5></div>
+                     
                     <div class="card-body">
                           <div class="form-group row">
+                            <div class="col-md-12">
+                            <p><i>Note: Leave the month blank if you want to add it as appropriation.</i></p>
+                            </div>
                             <label class="col-md-3 col-form-label" for="year">Year</label>
                             <div class="col-md-9">
                             <select name="year" id="year" class="form-control" required>
@@ -28,8 +32,8 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="month">Month</label>
                             <div class="col-md-9">
-                            <select name="month" id="month" class="form-control" required>
-                              <option value="">-----------</option>
+                            <select name="month" id="month" class="form-control">
+                              <option value="0">-----------</option>
                               @foreach(range(1, 12) as $m)
                                 <option value="{{$m}}" {{$m == date('m') ? 'selected' : ''}}>{{date('F', mktime(0, 0, 0, $m, 1))}}</option>
                               @endforeach
@@ -40,11 +44,27 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="office_id">Office</label>
                             <div class="col-md-9">
-                            <select name="office_id" id="office_id" class="form-control">
+                            <select name="office_category_id" id="category" class="form-control">
                               <option value="">-----------</option>
-                              @foreach($offices as $office)
-                              <option value="{{$office->id}}">{{$office->name}}</option>
+                              @foreach($categories as $category)
+                              <option value="{{$category->id}}">{{$category->name}}</option>
                               @endforeach
+                            </select>  
+                            <span class="help-block">Please select office</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="office_id">Object of Expenditure</label>
+                            <div class="col-md-9">
+                            <select name="object_of_expenditures" id="object_of_expenditures" class="form-control">
+                            </select>  
+                            <span class="help-block">Please select office</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="office_id">Expense Class</label>
+                            <div class="col-md-9">
+                            <select name="office_id" id="office_id" class="form-control">
                             </select>  
                             <span class="help-block">Please select office</span>
                             </div>
@@ -66,7 +86,7 @@
                     </div>
                     <div class="card-footer">
                       <button class="btn btn-primary" type="submit">Save</button>
-                      <button class="btn btn-danger" type="reset"> Cancel</button>
+                      <a class="btn btn-danger" href="{{route('allotment.index')}}"> Cancel</a>
                     </div>
                     </form>
                 </div>
@@ -77,8 +97,36 @@
 
 @endsection
 
-
 @section('javascript')
-
+<script>
+  var url = "{{url('offices/expense_classes/load_ooes/')}}/";
+  var url_expense_classes = "{{url('offices/load_expense_classes/')}}/";
+  $(document).ready(function(){
+    $('#category').change(function(){
+      var id = $(this).val();
+      $.ajax({
+        url: url + id,
+        method: "GET",
+        success: function(data){
+          $("select[name=object_of_expenditures]").html(data);
+        }
+      });
+    });
+    $('#object_of_expenditures').change(function(){
+      var id = $(this).val();
+      $.ajax({
+        url: url_expense_classes + id,
+        method: "GET",
+        success: function(data){
+          $("#office_id").html(data);
+          $('#office_id').select2({
+            "theme" : 'bootstrap',
+            placeholder: "Select expense class"
+          });
+        }
+      });
+    });
+  });
+</script>
 @endsection
 

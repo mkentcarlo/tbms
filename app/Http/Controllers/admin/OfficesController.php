@@ -27,7 +27,7 @@ class OfficesController extends Controller
      */
     public function index()
     {
-        return view('dashboard.offices.index',['offices' => OfficeCategory::all()]);
+        return view('dashboard.offices.index',['offices' => OfficeCategory::where('parent_id', 0)->get()]);
     }
 
     /**
@@ -39,6 +39,17 @@ class OfficesController extends Controller
     {
         return view('dashboard.offices.expense_classes',['expense_classes' => Office::all()]);
     }
+
+    /**
+     * Show the offices list.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function object_expenditures()
+    {
+        $object_expenditures = OfficeCategory::where('parent_id', '<>', 0)->get();
+        return view('dashboard.offices.object_expenditures',['object_expenditures' => $object_expenditures]);
+    }
     
 
     /**
@@ -48,8 +59,19 @@ class OfficesController extends Controller
      */
     public function create()
     {
-        $categories = OfficeCategory::all();
+        $categories = OfficeCategory::where('parent_id', 0)->get();
         return view('dashboard.offices.create',['categories' => $categories]);
+    }
+
+    /**
+     * Show the office create form.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function create_ooe()
+    {
+        $categories = OfficeCategory::all();
+        return view('dashboard.offices.create_ooe',['categories' => $categories]);
     }
 
      /**
@@ -59,9 +81,22 @@ class OfficesController extends Controller
      */
     public function edit($id)
     {
-        $office = Office::find($id);
+        $expense_class = Office::find($id);
+        $categories = OfficeCategory::where('parent_id', 0)->get();
+        $object_expenditures = OfficeCategory::where('parent_id', $expense_class->category->parent_id)->get();
+        return view('dashboard.offices.edit',['expense_class' => $expense_class, 'categories' => $categories, 'object_expenditures' => $object_expenditures]);
+    }
+
+    /**
+     * Show the office create form.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function edit_ooe($id)
+    {
+        $officecategory = OfficeCategory::find($id);
         $categories = OfficeCategory::all();
-        return view('dashboard.offices.edit',['office' => $office, 'categories' => $categories]);
+        return view('dashboard.offices.edit_ooe',['ooe' => $officecategory, 'categories' => $categories]);
     }
 
     /**
@@ -77,14 +112,55 @@ class OfficesController extends Controller
         ]);
 
         $office = new Office();
-        $office->name = $request->input('name');
-        $office->office_category_id = $request->input('office_category_id');
+        $office->name = addslashes($request->input('name'));
+        $office->office_category_id = $request->input('object_of_expenditures');
         $office->description = $request->input('description');
         $office->save();
 
         $request->session()->flash('message', 'Successfully created office.');
-        return redirect()->route('office.index');
+        return redirect()->route('office.expense_classes');
     }
+
+    /**
+     * Show the store office category.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function store_ooe(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name'       => 'required|min:1|max:256',
+            'office_category_id'       => 'required',
+        ]);
+
+        $category = new OfficeCategory();
+        $category->name = $request->input('name');
+        $category->parent_id = $request->input('office_category_id');
+        $category->save();
+        return redirect()->route('office.object_expenditures');
+    }
+
+     /**
+     * Show the store office category.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function update_ooe($id, Request $request)
+    {
+        $validatedData = $request->validate([
+            'name'       => 'required|min:1|max:256',
+            'office_category_id'       => 'required',
+        ]);
+
+        $OfficeCategory = OfficeCategory::find($id);
+        $OfficeCategory->name = $request->input('name');
+        $OfficeCategory->parent_id = $request->input('office_category_id');
+        $OfficeCategory->save();
+
+        $request->session()->flash('message', 'Successfully updated object expenditure.');
+        return redirect()->route('office.object_expenditures');
+    }
+    
 
      /**
      * Remove the specified resource from storage.
@@ -92,13 +168,29 @@ class OfficesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
         $office = Office::find($id);
         if($office){
             $office->delete();
         }
-        return redirect()->route('office.index');
+        $request->session()->flash('message', 'Expense class deleted successfully.');
+        return redirect()->route('office.expense_classes');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete_ooe($id)
+    {
+        $officeCategory = OfficeCategory::find($id);
+        if($officeCategory){
+            $officeCategory->delete();
+        }
+        return redirect()->route('office.object_expenditures');
     }
     
      /**
@@ -115,12 +207,12 @@ class OfficesController extends Controller
 
         $office = Office::find($id);
         $office->name = $request->input('name');
-        $office->office_category_id = $request->input('office_category_id');
+        $office->office_category_id = $request->input('object_of_expenditures');
         $office->description = $request->input('description');
         $office->save();
 
-        $request->session()->flash('message', 'Successfully updated office.');
-        return redirect()->route('office.index');
+        $request->session()->flash('message', 'Successfully updated expense class.');
+        return redirect()->route('office.expense_classes');
     }
     
     /**
@@ -172,6 +264,28 @@ class OfficesController extends Controller
             $category->delete();
         }
         return redirect()->route('office.categories');
+    }
+
+    public function load_ooes( $parent_id )
+    {
+        $ooes = OfficeCategory::where('parent_id', $parent_id)->get();
+        echo "<option value='0'>-------</option>";
+        foreach($ooes as $ooe){
+            echo "<option value='{$ooe->id}'>{$ooe->name}</option>";
+        }
+    }
+
+    public function load_tags(Request $request){
+        $data = Office::selectRaw('description as name')->where('description', 'LIKE', "%{$request->input('query')}%")->distinct()->get();
+        return response()->json($data);
+    }
+
+    public function load_expense_classes( $category_id )
+    {
+        $expense_classes = Office::where('office_category_id', $category_id)->get();
+        foreach($expense_classes as $expense_class){
+            echo "<option value='{$expense_class->id}'>{$expense_class->name}</option>";
+        }
     }
 
 

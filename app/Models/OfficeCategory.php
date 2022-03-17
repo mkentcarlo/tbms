@@ -11,5 +11,12 @@ class OfficeCategory extends Model
 
     protected $table = 'office_categories';
 
+    /**
+     * Get the User that owns the Notes.
+     */
+    public function parent()
+    {
+        return $this->belongsTo('App\Models\OfficeCategory', 'parent_id');
+    }
     
 }

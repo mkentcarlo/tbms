@@ -19,6 +19,14 @@ class Expense extends Model
         return $this->belongsTo('App\Models\Office', 'office_id');
     }
 
+    /**
+     * Get the Office that owns the Expenses.
+     */
+    public function expense_class()
+    {
+        return $this->belongsTo('App\Models\Office', 'office_id');
+    }
+
     public function transaction()
     {
         return $this->hasOne('App\Models\Transaction', 'reference_id');
@@ -39,10 +47,21 @@ class Expense extends Model
         $expense = new Expense();
         $year = !$year ? date('Y') : $year;
         $latest_expense = $expense->with('transaction')->where('month', $month)->where('year', $year)->where('office_id', $office_id)->orderBy('id', 'desc')->first();
-        if(!$latest_expense){
+        if(!$latest_expense){   
             $allotment = new Allotment();
             return $allotment->monthly_allocation($office_id, $month, $year);
         }
         return $latest_expense->transaction->ending_balance;
+    }
+
+    public static function get_total_expenses($office_id, $month = null, $year = null)
+    {
+        $expense = new Expense();
+        $year = !$year ? date('Y') : $year;
+        $total_expense = $expense->with('transaction')->where('year', $year)->where('office_id', $office_id);
+        if($month){
+            $total_expense = $total_expense->where('month', $month);
+        }
+        return $total_expense->sum('amount');
     }
 }

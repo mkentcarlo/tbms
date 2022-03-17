@@ -35,6 +35,20 @@ if(!function_exists('renderDropdown')){
             <h3>TBMS</h3>
         </div>
         <ul class="c-sidebar-nav">
+            <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="">Dashboard</a>
+            </li>
+            <li class="c-sidebar-nav-dropdown">
+                <a class="c-sidebar-nav-dropdown-toggle" href="javascript:;">Manage Offices</a>
+                <ul class="c-sidebar-nav-dropdown-items">
+                    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.index')}}"><span class="c-sidebar-nav-icon"></span>Offices</a></li>
+                    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.object_expenditures')}}"><span class="c-sidebar-nav-icon"></span>Object of Expenditures</a></li>
+                    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.expense_classes')}}"><span class="c-sidebar-nav-icon"></span>Expense Classes</a></li>
+                </ul>
+            </li>
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{route('allotment.index')}}">Manage Allotments & Appropriations</a>
+            </li>
         @if(isset($appMenus['sidebar menu']))
             @foreach($appMenus['sidebar menu'] as $menuel)
                 @if($menuel['slug'] === 'link')

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddExpenseClassToExpensesTable extends Migration
+class AddParentCategoryToOfficeCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddExpenseClassToExpensesTable extends Migration
      */
     public function up()
     {
-        Schema::table('expenses', function (Blueprint $table) {
-            $table->string('expense_class');
+        Schema::table('office_categories', function (Blueprint $table) {
+            $table->integer('parent_id')->unsigned();
         });
     }
 
@@ -25,7 +25,7 @@ class AddExpenseClassToExpensesTable extends Migration
      */
     public function down()
     {
-        Schema::table('expenses', function (Blueprint $table) {
+        Schema::table('office_categories', function (Blueprint $table) {
             //
         });
     }

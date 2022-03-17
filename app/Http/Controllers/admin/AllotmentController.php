@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Allotment;
 use App\Models\Office;
+use App\Models\OfficeCategory;
 use App\Models\Transaction;
 
 
@@ -46,7 +47,8 @@ class AllotmentController extends Controller
     public function create()
     {
         $offices = Office::all();
-        return view('dashboard.allotments.create',['offices' => $offices]);
+        $categories = OfficeCategory::where('parent_id', 0)->get();
+        return view('dashboard.allotments.create',['offices' => $offices, 'categories' => $categories]);
     }
 
      /**
@@ -58,7 +60,6 @@ class AllotmentController extends Controller
     {
         $validatedData = $request->validate([
             'year'       => 'required',
-            'month'       => 'required',
             'office_id'       => 'required',
             'amount'       => 'required',
         ]);
@@ -79,6 +80,9 @@ class AllotmentController extends Controller
         $transaction->ending_balance = $allotment->monthly_allocation($allotment->office_id, $allotment->month, $allotment->year);
         $transaction->remarks = $allotment->remarks;
         $transaction->transaction_date = $allotment->created_at;
+        $transaction->allotment_total_quarter = 0;
+        $transaction->expense_total = 0;
+        $transaction->allotment_available = 0;
         $transaction->save();
 
         $request->session()->flash('message', 'Successfully created allotment.');
@@ -93,8 +97,10 @@ class AllotmentController extends Controller
     public function edit($id)
     {
         $allotment = Allotment::find($id);
-        $offices = Office::all();
-        return view('dashboard.allotments.edit',['offices' => $offices, 'allotment' => $allotment]);
+        $categories = OfficeCategory::where('parent_id', 0)->get();
+        $object_expenditures = OfficeCategory::where('parent_id', $allotment->expense_class->category->parent_id)->get();
+        $expense_classes = Office::where('office_category_id', $allotment->expense_class->category->id)->get();
+        return view('dashboard.allotments.edit',['allotment' => $allotment, 'categories' => $categories, 'expense_classes' => $expense_classes, 'object_expenditures' => $object_expenditures]);
     }
 
     /**

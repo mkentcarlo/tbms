@@ -7,7 +7,7 @@
             <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
                 <div class="card">
-                  <form class="form-horizontal" action="{{route('expense.store')}}" method="post">
+                  <form class="form-horizontal" action="{{route('expense.store')}}" method="post" id="frmCreateExpense">
                   @csrf
                     <div class="card-header">
                       <h5><i class="fa fa-align-justify"></i>{{ __('Add new expense') }}</h5></div>
@@ -61,27 +61,50 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="office_id">Office</label>
                             <div class="col-md-9">
-                            <select name="office_id" id="office_id" class="form-control">
+                            <select name="office_category_id" id="category" class="form-control">
                               <option value="">-----------</option>
-                              @foreach($offices as $office)
-                              <option value="{{$office->id}}">{{$office->name}}</option>
+                              @foreach($categories as $category)
+                              <option value="{{$category->id}}">{{$category->name}}</option>
                               @endforeach
                             </select>  
                             <span class="help-block">Please select office</span>
                             </div>
                           </div>
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="office_allotment_balance">Allotment Available</label>
+                            <label class="col-md-3 col-form-label" for="office_id">Object of Expenditure</label>
                             <div class="col-md-9">
-                            <input type="number" id="office_allotment_balance" class="form-control" disabled/>
-                            <span class="help-block">Office allotment balance</span>
+                            <select name="object_of_expenditures" id="object_of_expenditures" class="form-control">
+                            </select>  
+                            <span class="help-block">Please select office</span>
                             </div>
                           </div>
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="expense_class">Expense Class</label>
+                            <label class="col-md-3 col-form-label" for="office_id">Expense Class</label>
                             <div class="col-md-9">
-                            <input type="text" class="form-control" name="expense_class" id="expense_class" required/>
-                            <span class="help-block">Please enter expense class</span>
+                            <select name="office_id" id="office_id" class="form-control">
+                            </select>  
+                            <span class="help-block">Please select office</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="total_allotment_quarter">4th quarter allotment total</label>
+                            <div class="col-md-9">
+                            <input type="number" id="total_allotment_quarter" name="total_allotment_quarter" class="form-control" readonly/>
+                            <span class="help-block">Total allotment release as of 4th quarter</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="total_expenses">Total Expenses</label>
+                            <div class="col-md-9">
+                            <input type="number" id="total_expenses" class="form-control" name="total_expenses" readonly/>
+                            <span class="help-block">Less: Total obligation incurred</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="office_allotment_balance">Allotment Available</label>
+                            <div class="col-md-9">
+                            <input type="number" id="office_allotment_balance" name="allotment_available" class="form-control" readonly/>
+                            <span class="help-block">Office allotment balance</span>
                             </div>
                           </div>
                           <div class="form-group row">
@@ -96,12 +119,12 @@
                             <div class="col-md-9">
                             <input type="number" class="form-control" name="ending_balance" id="ending_balance" readonly required/>
                             <span class="help-block">Allotment available after the amount</span>
-                            </div>
+                          </div>
                           </div>
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="remarks">Remarks</label>
+                            <label class="col-md-3 col-form-label" for="remarks">Payee</label>
                             <div class="col-md-9">
-                              <textarea class="form-control" id="remarks" name="remarks" rows="4" placeholder="Remarks.."></textarea>
+                              <textarea class="form-control" id="remarks" name="remarks" rows="4" placeholder="Payee.."></textarea>
                             </div>
                           </div>
                         
@@ -122,6 +145,8 @@
 
 @section('javascript')
   <script>
+    var url = "{{url('offices/expense_classes/load_ooes/')}}/";
+    var url_expense_classes = "{{url('offices/load_expense_classes/')}}/";
     jQuery(document).ready(function($){
      $('#office_id').change( function(e){
        var office_id = $("#office_id").val();
@@ -131,7 +156,9 @@
         url : "{{route('expense.get_office_allotment_balance')}}?office_id=" + office_id + "&month=" + month + "&year=" + year,
         method: "GET",
         success: function(data){
-          $("#office_allotment_balance").val(data);
+          $("#office_allotment_balance").val(data.total_allotment_balance);
+          $("#total_allotment_quarter").val(data.total_allotment_quarter);
+          $("#total_expenses").val(data.total_expenses);
           $("#amount").attr('max', data);
         }
       })
@@ -141,7 +168,36 @@
        var balance =  $("#office_allotment_balance").val();
         $("#ending_balance").val(balance - amount);
      });
+     $('#category').change(function(){
+      var id = $(this).val();
+      $.ajax({
+        url: url + id,
+        method: "GET",
+        success: function(data){
+          $("select[name=object_of_expenditures]").html(data);
+        } 
+      });
+    });
+    $('#object_of_expenditures').change(function(){
+      var id = $(this).val();
+      $.ajax({
+        url: url_expense_classes + id,
+        method: "GET",
+        success: function(data){
+          $("#office_id").html(data);
+          $('#office_id').select2({
+            "theme" : 'bootstrap',
+            placeholder: "Select expense class"
+          });
+        }
+      });
+    });
+    $('#frmCreateExpense').on('submit', function(e){
+      if($('input#ending_balance').val() <= 0){
+        alert('You have insufficient balance!')
+        e.preventDefault();
+      }
+    });
     });
   </script>
 @endsection
-

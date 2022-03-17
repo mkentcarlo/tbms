@@ -15,7 +15,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="year">Year</label>
                             <div class="col-md-9">
-                            <select name="year" id="year" class="form-control" required>
+                            <select name="year" id="year" class="form-control" readonly required>
                               <option value="">-----------</option>
                               @for($i = 2021; $i < date('Y'); $i++)
                               <option {{$i == $allotment->year ? 'selected' : ''}}>{{$i}}</option>
@@ -28,7 +28,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="month">Month</label>
                             <div class="col-md-9">
-                            <select name="month" id="month" class="form-control" required>
+                            <select name="month" id="month" class="form-control" readonly required>
                               <option value="">-----------</option>
                               @foreach(range(1, 12) as $m)
                                 <option value="{{$m}}" {{$m == $allotment->month ? 'selected' : ''}}>{{date('F', mktime(0, 0, 0, $m, 1))}}</option>
@@ -40,7 +40,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="office_id">Office</label>
                             <div class="col-md-9">
-                            <select name="office_id" id="office_id" class="form-control">
+                            <select name="office_id" id="office_id" class="form-control" readonly>
                               <option value="">-----------</option>
                               @foreach($offices as $office)
                               <option value="{{$office->id}}" {{$office->id == $allotment->office_id ? 'selected' : ''}}>{{$office->name}}</option>

@@ -8,6 +8,7 @@
     "/js/menu-edit.js": "/js/menu-edit.js",
     "/css/coreui-chartjs.css": "/css/coreui-chartjs.css",
     "/css/cropper.css": "/css/cropper.css",
+    "/css/bootstrap-datatable.css": "/css/bootstrap-datatable.css",
     "/js/coreui-utils.js": "/js/coreui-utils.js",
     "/js/axios.min.js": "/js/axios.min.js",
     "/js/coreui.bundle.min.js": "/js/coreui.bundle.min.js",
@@ -22,6 +23,9 @@
     "/js/tooltips.js": "/js/tooltips.js",
     "/js/jquery.js": "/js/jquery.js",
     "/js/select2.js": "/js/select2.js",
+    "/js/datatable.js": "/js/datatable.js",
+    "/js/typeahead.js": "/js/typeahead.js",
+    "/js/datatable-bootstrap.js": "/js/datatable-bootstrap.js",
     "/css/free.min.css": "/css/free.min.css",
     "/css/brand.min.css": "/css/brand.min.css",
     "/css/flag.min.css": "/css/flag.min.css"

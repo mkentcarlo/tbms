@@ -89,7 +89,7 @@
         @if(Session::has('message'))
         <div class="row">
         <div class="col-md-12 pl-5 pr-5">
-        <p class="alert alert-success">{{ Session::get('message') }}</p>
+        <p class="alert alert-success">{!! Session::get('message') !!}</p>
         </div>
         </div>
         @endif

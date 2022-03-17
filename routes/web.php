@@ -78,13 +78,23 @@ Route::group(['middleware' => ['get.menu']], function () {
 
         Route::get('offices',        'admin\OfficesController@index')->name('office.index');
         Route::post('offices/store',        'admin\OfficesController@store')->name('office.store');
+        Route::post('offices/store_ooe',        'admin\OfficesController@store_ooe')->name('office.store_ooe');
         Route::post('offices/update/{id}',        'admin\OfficesController@update')->name('office.update');
+        Route::post('offices/update_ooe/{id}',        'admin\OfficesController@update_ooe')->name('office.update_ooe');
         Route::get('offices/create',        'admin\OfficesController@create')->name('office.create');
+        Route::get('offices/create_ooe',        'admin\OfficesController@create_ooe')->name('office.create_ooe');
         Route::get('offices/edit/{id}',        'admin\OfficesController@edit')->name('office.edit');
+        Route::get('offices/edit_ooe/{id}',        'admin\OfficesController@edit_ooe')->name('office.edit_ooe');
         Route::get('offices/delete/{id}',        'admin\OfficesController@delete')->name('office.delete');
+        Route::get('offices/delete_ooe/{id}',        'admin\OfficesController@delete_ooe')->name('office.delete_ooe');
         Route::get('offices/categories',        'admin\OfficesController@categories')->name('office.categories');
         Route::post('offices/categories_store',        'admin\OfficesController@categories_store')->name('office.categories.store');
         Route::get('offices/categories_delete/{id}',        'admin\OfficesController@categories_delete')->name('office.categories.delete');
+        Route::get('offices/expense_classes',        'admin\OfficesController@expense_classes')->name('office.expense_classes');
+        Route::get('offices/object_expenditures',        'admin\OfficesController@object_expenditures')->name('office.object_expenditures');
+        Route::get('offices/expense_classes/load_ooes/{parent_id}',        'admin\OfficesController@load_ooes')->name('office.expense_classes.load_ooes');
+        Route::get('offices/load_tags',        'admin\OfficesController@load_tags')->name('office.load_tags');
+        Route::get('offices/load_expense_classes/{category_id}',        'admin\OfficesController@load_expense_classes')->name('office.load_expense_classes');
 
         Route::get('allotments', 'admin\AllotmentController@index')->name('allotment.index');
         Route::get('allotments/create',        'admin\AllotmentController@create')->name('allotment.create');
@@ -104,6 +114,7 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::post('expenses/update/{id}',        'admin\ExpenseController@update')->name('expense.update');
         Route::get('expenses/delete/{id}',        'admin\ExpenseController@delete')->name('expense.delete');
         Route::get('expenses/get_office_allotment_balance',        'admin\ExpenseController@get_office_allotment_balance')->name('expense.get_office_allotment_balance');
+        Route::get('expenses/print/{id}',        'admin\ExpenseController@print')->name('expense.print');
 
         Route::resource('roles',        'RolesController');
         Route::resource('mail',        'MailController');

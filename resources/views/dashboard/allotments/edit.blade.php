@@ -10,14 +10,14 @@
                   <form class="form-horizontal" action="{{route('allotment.update',['id' => $allotment->id])}}" method="post">
                   @csrf
                     <div class="card-header">
-                      <h5><i class="fa fa-align-justify"></i>{{ __('Edit Allotment') }}</h5></div>
+                      <h5><i class="fa fa-align-justify"></i>{{ __('Edit') }}</h5></div>
                     <div class="card-body">
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="year">Year</label>
                             <div class="col-md-9">
                             <select name="year" id="year" class="form-control" required>
                               <option value="">-----------</option>
-                              @for($i = 2021; $i < date('Y'); $i++)
+                              @for($i = 2021; $i <= date('Y'); $i++)
                               <option {{$i == $allotment->year ? 'selected' : ''}}>{{$i}}</option>
                               @endfor
 
@@ -40,10 +40,32 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="office_id">Office</label>
                             <div class="col-md-9">
-                            <select name="office_id" id="office_id" class="form-control">
+                            <select name="office_category_id" id="category" class="form-control">
                               <option value="">-----------</option>
-                              @foreach($offices as $office)
-                              <option value="{{$office->id}}" {{$office->id == $allotment->office_id ? 'selected' : ''}}>{{$office->name}}</option>
+                              @foreach($categories as $category)
+                              <option value="{{$category->id}}" {{$category->id == $allotment->expense_class->category->parent->id ? 'selected' : ''}}>{{$category->name}}</option>
+                              @endforeach
+                            </select>  
+                            <span class="help-block">Please select office</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="office_id">Object of Expenditure</label>
+                            <div class="col-md-9">
+                            <select name="object_of_expenditures" id="object_of_expenditures" class="form-control">
+                              @foreach($object_expenditures as $object_expenditure)
+                                <option value="{{$object_expenditure->id}}" {{$object_expenditure->id == $allotment->expense_class->category->id ? 'selected' : ''}}>{{$object_expenditure->name}}</option>
+                              @endforeach
+                            </select>  
+                            <span class="help-block">Please select</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="office_id">Expense Class</label>
+                            <div class="col-md-9">
+                            <select name="office_id" id="office_id" class="form-control">
+                              @foreach($expense_classes as $expense_class)
+                                <option value="{{$expense_class->id}}">{{$expense_class->name}}</option>
                               @endforeach
                             </select>  
                             <span class="help-block">Please select office</span>
@@ -66,7 +88,7 @@
                     </div>
                     <div class="card-footer">
                       <button class="btn btn-primary" type="submit">Save</button>
-                      <button class="btn btn-danger" type="reset"> Cancel</button>
+                      <a class="btn btn-danger" href="{{route('allotment.index')}}"> Cancel</a>
                     </div>
                     </form>
                 </div>
@@ -79,6 +101,35 @@
 
 
 @section('javascript')
-
+<script>
+  var url = "{{url('offices/expense_classes/load_ooes/')}}/";
+  var url_expense_classes = "{{url('offices/load_expense_classes/')}}/";
+  $(document).ready(function(){
+    $('#category').change(function(){
+      var id = $(this).val();
+      $.ajax({
+        url: url + id,
+        method: "GET",
+        success: function(data){
+          $("select[name=object_of_expenditures]").html(data);
+        }
+      });
+    });jj,iiu
+    $('#object_of_expenditures').change(function(){
+      var id = $(this).val();
+      $.ajax({
+        url: url_expense_classes + id,
+        method: "GET",
+        success: function(data){
+          $("#office_id").html(data);
+          $('#office_id').select2({
+            "theme" : 'bootstrap',
+            placeholder: "Select expense class"
+          });
+        }
+      });
+    });
+  });
+</script>
 @endsection
 

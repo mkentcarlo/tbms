@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddExpenseClassToExpensesTable extends Migration
+class AddColumns2ToTransactionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddExpenseClassToExpensesTable extends Migration
      */
     public function up()
     {
-        Schema::table('expenses', function (Blueprint $table) {
-            $table->string('expense_class');
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->float('allotment_available', 10, 2)->default(0);
         });
     }
 
@@ -25,7 +25,7 @@ class AddExpenseClassToExpensesTable extends Migration
      */
     public function down()
     {
-        Schema::table('expenses', function (Blueprint $table) {
+        Schema::table('transactions', function (Blueprint $table) {
             //
         });
     }

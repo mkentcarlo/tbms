@@ -48,7 +48,7 @@
                             <th>Ending Balance</th>
                             <th>Remarks</th>
                             <th>Transaction Date</th>
-                            <th style="width: 150px"></th>
+                            <th style="width: 170px"></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -62,7 +62,8 @@
                                 <td>{{$expense->transaction->remarks}}</td>
                                 <td>{{$expense->transaction->transaction_date}}</td>
                                 <td><a class="btn btn-sm btn-primary" href="{{route('expense.edit',['id' => $expense->id])}}">Edit</a>
-                                <a class="btn btn-sm btn-danger" href="{{route('expense.delete',['id' => $expense->id])}}">Delete</a></td>
+                                <a class="btn btn-sm btn-danger delete" href="{{route('expense.delete',['id' => $expense->id])}}">Delete</a>
+                              <a class="btn btn-sm btn-success print" href="{{route('expense.print',['id' => $expense->id])}}">Print</a></td>
                               </tr>
                             @endforeach
                         </tbody>
@@ -84,6 +85,16 @@
       $("input[name=s]").val('');
       $("#frmFilter").submit();
     });
+    $(document).on('click', '.delete', function(e){
+      if(!confirm('Are you sure you want to delete this?')){
+        e.preventDefault();
+      }
+    });
+    $('.print').click(function(e){
+      e.preventDefault();
+      var link = $(this).attr('href');
+      window.open(link, 'Print haha', 'toolbar=no,location=no,menubar=no,scrollbars=no,resizable=no,titlebar=no');
+    })
   })
 </script>
 @endsection
