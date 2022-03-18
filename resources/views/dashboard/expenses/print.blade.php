@@ -117,11 +117,11 @@
                     <tr>
                         <td>Total Allotment Release as <br>
                         of the <strong><u>{{get_month_quarter($expense->month)}}</u></strong> quarter</td>
-                        <td>{{format_amount($expense->transaction->allotment_available)}}</td>
+                        <td>{{format_amount($expense->transaction()->allotment_available)}}</td>
                     </tr>
                     <tr>
                         <td>Less: Total obligation Incurred</td>
-                        <td>{{format_amount($expense->transaction->expense_total)}}</td>
+                        <td>{{format_amount($expense->transaction()->expense_total)}}</td>
                     </tr>
                     <tr>
                         <td>TOTAL ALLOTMENT AVAILABLE</td>
@@ -133,7 +133,7 @@
                     </tr>
                     <tr>
                         <td>BALANCE OF ALLOTMENT</td>
-                        <td>{{format_amount($expense->transaction->ending_balance)}}</td>
+                        <td>{{format_amount($expense->transaction()->ending_balance)}}</td>
                     </tr>
                 </table>
                 <div class="row">
@@ -152,8 +152,8 @@
                     <div class="clearfix">
                         <p class="text-center">
                             <br>
-                            <u>GWENDOLYN A. CLAROS, REB,MEM</u> <br>
-                            OIC-Municipal Budget Officer
+                            <strong>GWENDOLYN &nbsp;A.&nbsp; CLAROS, REB,MEM</strong> <br>
+                            Municipal Budget Officer
                         </p>
                     </div>
                 </div>
@@ -167,13 +167,13 @@
                 Republic of the Philippines <br>
                 <strong>PROVINCE OF AGUSAN DEL SUR</strong><br>
                 <strong>Municipality of Talacogon</strong>
-                <p class="date">Date: {{date('m-d-Y')}}</p>
+                <p class="date">Date: {{$expense->created_at}}</p>
             </div>
             <div class="content">
                 <table class="table office">
                     <tr>
                         <td>OFFICE:</td>
-                        <td></td>
+                        <td>{{$expense->office->category->parent->name}}</td>
                     </tr>
                     <tr>
                         <td>PROGRAM:</td>
@@ -184,27 +184,27 @@
                 <table class="main">
                     <tr>
                         <td>EXPENSE CLASS</td>
-                        <td></td>
+                        <td>{{$expense->office->name}}</td>
                     </tr>
                     <tr>
                         <td>ACCOUNT CODE</td>
-                        <td></td>
+                        <td>{{$expense->account_code}}</td>
                     </tr>
                     <tr>
                         <td>TOTAL APPROPRIATION</td>
-                        <td></td>
+                        <td>{{format_amount($expense->office->getAppropriation($expense->year))}}</td>
                     </tr>
                 </table>
                 <br>
                 <table class="main">
                     <tr>
                         <td>Total Allotment Release as <br>
-                        of the ___ quarter</td>
-                        <td></td>
+                        of the <strong><u>{{get_month_quarter($expense->month)}}</u></strong> quarter</td>
+                        <td>{{format_amount($expense->transaction()->allotment_available)}}</td>
                     </tr>
                     <tr>
                         <td>Less: Total obligation Incurred</td>
-                        <td></td>
+                        <td>{{format_amount($expense->transaction()->expense_total)}}</td>
                     </tr>
                     <tr>
                         <td>TOTAL ALLOTMENT AVAILABLE</td>
@@ -212,7 +212,11 @@
                     </tr>
                     <tr>
                         <td>Less: this claim (Voucher, Payroll, etc.)</td>
-                        <td></td>
+                        <td class="red">{{format_amount($expense->amount)}}</td>
+                    </tr>
+                    <tr>
+                        <td>BALANCE OF ALLOTMENT</td>
+                        <td>{{format_amount($expense->transaction()->ending_balance)}}</td>
                     </tr>
                 </table>
                 <div class="row">
@@ -231,8 +235,8 @@
                     <div class="clearfix">
                         <p class="text-center">
                             <br>
-                            <u>GWENDOLYN A. CLAROS, REB,MEM</u> <br>
-                            OIC-Municipal Budget Officer
+                            <strong>GWENDOLYN &nbsp;A.&nbsp; CLAROS, REB,MEM</strong> <br>
+                            Municipal Budget Officer
                         </p>
                     </div>
                 </div>
