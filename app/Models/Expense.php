@@ -46,7 +46,7 @@ class Expense extends Model
     {
         $expense = new Expense();
         $year = !$year ? date('Y') : $year;
-        $latest_expense = $expense->with('transaction')->where('month', $month)->where('year', $year)->where('office_id', $office_id)->orderBy('id', 'desc')->first();
+        $latest_expense = $expense->where('month', $month)->where('year', $year)->where('office_id', $office_id)->orderBy('id', 'desc')->first();
         if(!$latest_expense){   
             $allotment = new Allotment();
             return $allotment->monthly_allocation($office_id, $month, $year);
@@ -58,7 +58,7 @@ class Expense extends Model
     {
         $expense = new Expense();
         $year = !$year ? date('Y') : $year;
-        $total_expense = $expense->with('transaction')->where('year', $year)->where('office_id', $office_id);
+        $total_expense = $expense->where('year', $year)->where('office_id', $office_id);
         if($month){
             $total_expense = $total_expense->where('month', $month);
         }
