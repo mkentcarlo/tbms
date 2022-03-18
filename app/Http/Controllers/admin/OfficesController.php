@@ -283,6 +283,7 @@ class OfficesController extends Controller
     public function load_expense_classes( $category_id )
     {
         $expense_classes = Office::where('office_category_id', $category_id)->get();
+        echo "<option value='0'>Select expense class</option>";
         foreach($expense_classes as $expense_class){
             echo "<option value='{$expense_class->id}'>{$expense_class->name}</option>";
         }
