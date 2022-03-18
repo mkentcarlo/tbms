@@ -21,6 +21,6 @@ class Office extends Model
 
     public function getAppropriation($year)
     {
-        return Allotment::where('year', $year)->where('month', '0')->sum('amount')->where('office_id', $this->id);
+        return Allotment::where('year', $year)->where('month', '0')->where('office_id', $this->id)->sum('amount');
     }
 }
