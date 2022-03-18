@@ -223,7 +223,7 @@ class OfficesController extends Controller
     public function categories()
     {
         $categories = OfficeCategory::all();
-        return view('dashboard.offices.categories', [ 'categories' => $categories ]);
+        return view('dashboard.offices.index', [ 'offices' => $categories ]);
     }
 
     /**
