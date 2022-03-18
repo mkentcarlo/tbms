@@ -29,7 +29,7 @@ class Expense extends Model
 
     public function transaction()
     {
-        return Transaction::where('reference_id', $this->id)->where('type', 'expense')->get();
+        return Transaction::where('reference_id', $this->id)->where('type', 'expense')->first();
     }
 
     public static function generate_expense_id(){
