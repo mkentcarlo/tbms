@@ -172,8 +172,8 @@ class ExpenseController extends Controller
     {
         $expense = Expense::find($id);
 
-        if($expense->transaction){
-            $expense->transaction->delete();
+        if($expense->transaction()){
+            Transaction::where('reference_id', $id)->where('type', 'expense')->delete();
         }
         if($expense){
             $expense->delete();
