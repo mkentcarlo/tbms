@@ -51,7 +51,7 @@ class Expense extends Model
             $allotment = new Allotment();
             return $allotment->monthly_allocation($office_id, $month, $year);
         }
-        return $latest_expense->transaction->ending_balance;
+        return $latest_expense->transaction()->ending_balance;
     }
 
     public static function get_total_expenses($office_id, $month = null, $year = null)
