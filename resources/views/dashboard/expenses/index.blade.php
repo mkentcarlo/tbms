@@ -54,7 +54,7 @@
                         <tbody>
                             @foreach($expenses as $expense)
                               <tr>
-                                <td>{{$expense->transaction()->ending_balance}} {{$expense->id}}</td>
+                                <td>{{$expense->account_code}}</td>
                                 <td>{{$expense->office->name}}</td>
                                 <td>{{$expense->expense_class}}</td>
                                 <td>{{number_format($expense->transaction()->amount, 2)}}</td>

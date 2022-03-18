@@ -125,7 +125,7 @@
                     </tr>
                     <tr>
                         <td>TOTAL ALLOTMENT AVAILABLE</td>
-                        <td></td>
+                        <td>{{format_amount($expense->transaction()->allotment_available)}}</td>
                     </tr>
                     <tr>
                         <td>Less: this claim (Voucher, Payroll, etc.)</td>
@@ -208,7 +208,7 @@
                     </tr>
                     <tr>
                         <td>TOTAL ALLOTMENT AVAILABLE</td>
-                        <td></td>
+                        <td>{{format_amount($expense->transaction()->allotment_available)}}</td>
                     </tr>
                     <tr>
                         <td>Less: this claim (Voucher, Payroll, etc.)</td>
