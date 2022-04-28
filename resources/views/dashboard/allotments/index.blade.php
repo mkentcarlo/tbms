@@ -29,7 +29,7 @@
                             <th>Year</th>
                             <th>Month</th>
                             <th>Office</th>
-                            <th>Object of Expenditures</th>
+                            <th>Office group</th>
                             <th>Expense Class</th>
                             <th>Amount</th>
                             <th>Remarks</th>
@@ -55,7 +55,7 @@
                           @endforeach
                         </tbody>
                       </table>
-                    </div>
+                    </div>nnh
                 </div>
               </div>
             </div>

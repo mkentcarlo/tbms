@@ -27,7 +27,7 @@ class OfficesController extends Controller
      */
     public function index()
     {
-        return view('dashboard.offices.index',['offices' => OfficeCategory::where('parent_id', 0)->get()]);
+        return view('dashboard.offices.index',['offices' => OfficeCategory::where('parent_id','<>', 0)->get()]);
     }
 
     /**
@@ -49,6 +49,28 @@ class OfficesController extends Controller
     {
         $object_expenditures = OfficeCategory::where('parent_id', '<>', 0)->get();
         return view('dashboard.offices.object_expenditures',['object_expenditures' => $object_expenditures]);
+    }
+
+    /**
+     * Show the offices list.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function offices()
+    {
+        $offices = OfficeCategory::where('parent_id', '<>', 0)->get();
+        return view('dashboard.offices.index',['offices' => $offices]);
+    }
+
+    /**
+     * Show the office groups list.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function office_groups()
+    {
+        $office_groups = OfficeCategory::where('parent_id', '=', 0)->get();
+        return view('dashboard.offices.office_groups.index',['office_groups' => $office_groups]);
     }
     
 
@@ -79,6 +101,27 @@ class OfficesController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    public function create_main_office()
+    {
+        $office_groups = OfficeCategory::all();
+        return view('dashboard.offices.main_offices.create',['office_groups' => $office_groups]);
+    }
+
+    /**
+     * Show the office create form.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function create_office_group()
+    {
+        return view('dashboard.offices.office_groups.create');
+    }
+
+     /**
+     * Show the office create form.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function edit($id)
     {
         $expense_class = Office::find($id);
@@ -98,6 +141,30 @@ class OfficesController extends Controller
         $categories = OfficeCategory::all();
         return view('dashboard.offices.edit_ooe',['ooe' => $officecategory, 'categories' => $categories]);
     }
+
+    /**
+     * Show the office create form.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function edit_main_office($id)
+    {
+        $office = OfficeCategory::find($id);
+        $office_groups = OfficeCategory::all();
+        return view('dashboard.offices.main_offices.edit',['office' => $office, 'office_groups' => $office_groups]);
+    }
+
+     /**
+     * Show the office create form.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function edit_office_group($id)
+    {
+        $office_group = OfficeCategory::find($id);
+        return view('dashboard.offices.office_groups.edit',['office_group' => $office_group]);
+    }
+
 
     /**
      * Show the store office category.
@@ -140,6 +207,45 @@ class OfficesController extends Controller
         return redirect()->route('office.object_expenditures');
     }
 
+    /**
+     * Show the store office category.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function store_main_office(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name'       => 'required|min:1|max:256',
+            'office_category_id'       => 'required',
+        ]);
+
+        $category = new OfficeCategory();
+        $category->name = $request->input('name');
+        $category->parent_id = $request->input('office_category_id');
+        $category->save();
+        return redirect()->route('office.index');
+    }
+
+
+    /**
+     * Show the store office category.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function store_office_group(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name'       => 'required|min:1|max:256',
+        ]);
+
+        $category = new OfficeCategory();
+        $category->name = $request->input('name');
+        $category->parent_id = 0;
+        $category->save();
+        $request->session()->flash('message', 'Successfully added office group.');
+        return redirect()->route('office.office_groups');
+    }
+
      /**
      * Show the store office category.
      *
@@ -159,6 +265,46 @@ class OfficesController extends Controller
 
         $request->session()->flash('message', 'Successfully updated object expenditure.');
         return redirect()->route('office.object_expenditures');
+    }
+
+     /**
+     * Show the store office category.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function update_main_office($id, Request $request)
+    {
+        $validatedData = $request->validate([
+            'name'       => 'required|min:1|max:256',
+            'office_category_id'       => 'required',
+        ]);
+
+        $OfficeCategory = OfficeCategory::find($id);
+        $OfficeCategory->name = $request->input('name');
+        $OfficeCategory->parent_id = $request->input('office_category_id');
+        $OfficeCategory->save();
+
+        $request->session()->flash('message', 'Successfully updated office.');
+        return redirect()->route('office.index');
+    }
+
+     /**
+     * Show the store office category.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function update_office_group($id, Request $request)
+    {
+        $validatedData = $request->validate([
+            'name'       => 'required|min:1|max:256'
+        ]);
+
+        $OfficeCategory = OfficeCategory::find($id);
+        $OfficeCategory->name = $request->input('name');
+        $OfficeCategory->save();
+
+        $request->session()->flash('message', 'Successfully updated office group.');
+        return redirect()->route('office.office_groups');
     }
     
 
@@ -191,6 +337,38 @@ class OfficesController extends Controller
             $officeCategory->delete();
         }
         return redirect()->route('office.object_expenditures');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete_main_office(Request $request, $id)
+    {
+        $officeCategory = OfficeCategory::find($id);
+        if($officeCategory){
+            $officeCategory->delete();
+        }
+        $request->session()->flash('message', 'Office deleted successfully.');
+        return redirect()->route('office.index');
+    }
+
+     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete_office_group(Request $request, $id)
+    {
+        $officeCategory = OfficeCategory::find($id);
+        if($officeCategory){
+            $officeCategory->delete();
+        }
+        $request->session()->flash('message', 'Office group deleted successfully.');
+        return redirect()->route('office.office_groups');
     }
     
      /**

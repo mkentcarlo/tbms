@@ -16,7 +16,7 @@
                           <tr>
                             <th>Expense Class</th>
                             <th>Office</th>
-                            <th>Object of Expenditures</th>
+                            <th>Office group</th>
                             <th>Date Added</th>
                             <th style="width: 150px;"></th>
                           </tr>

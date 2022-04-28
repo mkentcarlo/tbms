@@ -61,6 +61,9 @@
                         </thead>
                         <tbody>
                           @foreach($transactions as $transaction)
+                            @if(!$transaction->reference)
+                              @continue
+                            @endif
                             @if($transaction->type == 'expense')
                             <tr class="text-danger">
                               <td>{{$transaction->reference->account_code}}</td>

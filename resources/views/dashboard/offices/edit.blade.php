@@ -33,7 +33,7 @@
                           </div>
 
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="category">Object of Expenditures</label>
+                            <label class="col-md-3 col-form-label" for="category">Office group</label>
                             <div class="col-md-9">
                             <select name="object_of_expenditures" id="category" class="form-control">
                               @foreach($object_expenditures as $object_expenditure)

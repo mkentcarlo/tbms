@@ -10,7 +10,7 @@
                   <form class="form-horizontal" action="{{route('office.store_ooe')}}" method="post">
                   @csrf
                     <div class="card-header">
-                      <h5><i class="fa fa-align-justify"></i>{{ __('Create Object of Expenditures') }}</h5></div>
+                      <h5><i class="fa fa-align-justify"></i>{{ __('Create Office Group') }}</h5></div>
                     <div class="card-body">
                           
                         <div class="row">

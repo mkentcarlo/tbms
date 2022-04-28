@@ -41,8 +41,9 @@ if(!function_exists('renderDropdown')){
             <li class="c-sidebar-nav-dropdown">
                 <a class="c-sidebar-nav-dropdown-toggle" href="javascript:;">Manage Offices</a>
                 <ul class="c-sidebar-nav-dropdown-items">
+                    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.office_groups')}}"><span class="c-sidebar-nav-icon"></span>Office groups</a></li>
                     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.index')}}"><span class="c-sidebar-nav-icon"></span>Offices</a></li>
-                    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.object_expenditures')}}"><span class="c-sidebar-nav-icon"></span>Object of Expenditures</a></li>
+                    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.object_expenditures')}}"><span class="c-sidebar-nav-icon"></span>Object </a></li>
                     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.expense_classes')}}"><span class="c-sidebar-nav-icon"></span>Expense Classes</a></li>
                 </ul>
             </li>

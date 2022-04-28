@@ -83,6 +83,7 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::post('offices/update_ooe/{id}',        'admin\OfficesController@update_ooe')->name('office.update_ooe');
         Route::get('offices/create',        'admin\OfficesController@create')->name('office.create');
         Route::get('offices/create_ooe',        'admin\OfficesController@create_ooe')->name('office.create_ooe');
+        
         Route::get('offices/edit/{id}',        'admin\OfficesController@edit')->name('office.edit');
         Route::get('offices/edit_ooe/{id}',        'admin\OfficesController@edit_ooe')->name('office.edit_ooe');
         Route::get('offices/delete/{id}',        'admin\OfficesController@delete')->name('office.delete');
@@ -92,6 +93,22 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::get('offices/categories_delete/{id}',        'admin\OfficesController@categories_delete')->name('office.categories.delete');
         Route::get('offices/expense_classes',        'admin\OfficesController@expense_classes')->name('office.expense_classes');
         Route::get('offices/object_expenditures',        'admin\OfficesController@object_expenditures')->name('office.object_expenditures');
+
+        // These are routes for office groups
+        Route::get('offices/office_groups',        'admin\OfficesController@office_groups')->name('office.office_groups');
+        Route::get('offices/create_office_group',        'admin\OfficesController@create_office_group')->name('office.create_office_group');
+        Route::post('offices/store_office_group',        'admin\OfficesController@store_office_group')->name('office.store_office_group');
+        Route::get('offices/edit_office_group/{id}',        'admin\OfficesController@edit_office_group')->name('office.edit_office_group');
+        Route::post('offices/update_office_group/{id}',        'admin\OfficesController@update_office_group')->name('office.update_office_group');
+        Route::get('offices/delete_office_group/{id}',        'admin\OfficesController@delete_office_group')->name('office.delete_office_group');
+
+        // These are routes for main offices
+        Route::post('offices/store_main_office',        'admin\OfficesController@store_main_office')->name('office.store_main_office');
+        Route::get('offices/create_main_office',        'admin\OfficesController@create_main_office')->name('office.create_main_office');
+        Route::get('offices/delete_main_office/{id}',        'admin\OfficesController@delete_main_office')->name('office.delete_main_office');
+        Route::get('offices/edit_main_office/{id}',        'admin\OfficesController@edit_main_office')->name('office.edit_main_office');
+        Route::post('offices/update_main_office/{id}',        'admin\OfficesController@update_main_office')->name('office.update_main_office');
+        
         Route::get('offices/expense_classes/load_ooes/{parent_id}',        'admin\OfficesController@load_ooes')->name('office.expense_classes.load_ooes');
         Route::get('offices/load_tags',        'admin\OfficesController@load_tags')->name('office.load_tags');
         Route::get('offices/load_expense_classes/{category_id}',        'admin\OfficesController@load_expense_classes')->name('office.load_expense_classes');

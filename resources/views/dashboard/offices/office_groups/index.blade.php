@@ -8,23 +8,21 @@
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-header">
-                      <h5><i class="fa fa-align-justify"></i>{{ __('Office group') }}</h5></div>
+                      <h5><i class="fa fa-align-justify"></i>{{ __('Office groups') }}</h5></div>
                     <div class="card-body">
-                        <a href="{{route('office.create_ooe')}}" class="btn btn-primary">Add new</a> <br><br>
-                        <table class="table table-striped" id="tableObejectExpenditures">
+                        <a href="{{route('office.create_office_group')}}" class="btn btn-primary">Add new</a> <br><br>
+                        <table class="table table-striped" id="tableOfficeGroups">
                           <thead>
                             <tr>
                               <th>Name</th>
-                              <th>Office</th>
                               <th style="width: 150px"></th>
                             </tr>
                           </thead>
                           <tbody>
-                            @foreach($object_expenditures as $ooe)
+                            @foreach($office_groups as $office_group)
                             <tr>
-                              <td>{{$ooe->name}}</td>
-                              <td>{{$ooe->parent->name}}</td>
-                              <td><a class="btn btn-primary btn-sm" href="{{route('office.edit_ooe',['id' => $ooe->id])}}">Edit</a> <a class="btn btn-danger btn-sm delete" href="{{route('office.delete_ooe',['id' => $ooe->id])}}">Delete</a></td>
+                              <td>{{$office_group->name}}</td>
+                              <td><a class="btn btn-primary btn-sm" href="{{route('office.edit_office_group',['id' => $office_group->id])}}">Edit</a> <a class="btn btn-danger btn-sm delete" href="{{route('office.delete_office_group',['id' => $office_group->id])}}">Delete</a></td>
                             </tr>
                             @endforeach
                           </tbody>
@@ -48,7 +46,7 @@
 <script src="{{ asset('js/datatable-bootstrap.js') }}"></script>
 <script>
   $(document).ready(function(){
-    $('#tableObejectExpenditures').DataTable();
+    $('#tableOfficeGroups').DataTable();
     $(document).on('click', '.delete', function(e){
       if(!confirm('Are you sure you want to delete this?')){
         e.preventDefault();
