@@ -38,7 +38,7 @@
                             </div>
                           </div>
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="office_id">Office</label>
+                            <label class="col-md-3 col-form-label" for="office_id">Office group</label>
                             <div class="col-md-9">
                             <select name="office_category_id" id="category" class="form-control">
                               <option value="">-----------</option>
@@ -46,18 +46,18 @@
                               <option value="{{$category->id}}" {{$category->id == $allotment->expense_class->category->parent->id ? 'selected' : ''}}>{{$category->name}}</option>
                               @endforeach
                             </select>  
-                            <span class="help-block">Please select office</span>
+                            <span class="help-block">Please select office group</span>
                             </div>
                           </div>
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="office_id">Object of Expenditure</label>
+                            <label class="col-md-3 col-form-label" for="office_id">Select office</label>
                             <div class="col-md-9">
                             <select name="object_of_expenditures" id="object_of_expenditures" class="form-control">
                               @foreach($object_expenditures as $object_expenditure)
                                 <option value="{{$object_expenditure->id}}" {{$object_expenditure->id == $allotment->expense_class->category->id ? 'selected' : ''}}>{{$object_expenditure->name}}</option>
                               @endforeach
                             </select>  
-                            <span class="help-block">Please select</span>
+                            <span class="help-block">Please select office</span>
                             </div>
                           </div>
                           <div class="form-group row">
