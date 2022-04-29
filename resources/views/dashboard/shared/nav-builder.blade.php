@@ -43,14 +43,16 @@ if(!function_exists('renderDropdown')){
                 <ul class="c-sidebar-nav-dropdown-items">
                     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.office_groups')}}"><span class="c-sidebar-nav-icon"></span>Office groups</a></li>
                     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.index')}}"><span class="c-sidebar-nav-icon"></span>Offices</a></li>
-                    <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.object_expenditures')}}"><span class="c-sidebar-nav-icon"></span>Object </a></li>
                     <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{route('office.expense_classes')}}"><span class="c-sidebar-nav-icon"></span>Expense Classes</a></li>
                 </ul>
             </li>
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link" href="{{route('allotment.index')}}">Manage Allotments & Appropriations</a>
             </li>
-        @if(isset($appMenus['sidebar menu']))
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{route('expense.index')}}">Manage Expenses</a>
+            </li>
+        <!-- @if(isset($appMenus['sidebar menu']))
             @foreach($appMenus['sidebar menu'] as $menuel)
                 @if($menuel['slug'] === 'link')
                     <li class="c-sidebar-nav-item">
@@ -76,7 +78,7 @@ if(!function_exists('renderDropdown')){
                     </li>
                 @endif
             @endforeach
-        @endif
+        @endif -->
         </ul>
         <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
     </div>

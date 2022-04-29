@@ -20,7 +20,7 @@
                           </div>
                           
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="category">Select Office</label>
+                            <label class="col-md-3 col-form-label" for="category">Select Office group</label>
                             <div class="col-md-9">
                             <select name="office_category_id" id="category" class="form-control">
                               <option value="">-----------</option>
@@ -28,12 +28,12 @@
                               <option value="{{$category->id}}">{{$category->name}}</option>
                               @endforeach
                             </select>  
-                            <span class="help-block">Please select office</span>
+                            <span class="help-block">Please select office group</span>
                             </div>
                           </div>
 
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="category">Object of Expenditures</label>
+                            <label class="col-md-3 col-form-label" for="category">Select office</label>
                             <div class="col-md-9">
                             <select name="object_of_expenditures" id="category" class="form-control">
                             </select>  
