@@ -117,7 +117,7 @@
                     <tr>
                         <td>Total Allotment Release as <br>
                         of the <strong><u>{{get_month_quarter($expense->month)}}</u></strong> quarter</td>
-                        <td>{{format_amount($expense->transaction()->allotment_available)}}</td>
+                        <td>{{format_amount($monthly_allotment)}}</td>
                     </tr>
                     <tr>
                         <td>Less: Total obligation Incurred</td>
@@ -200,7 +200,7 @@
                     <tr>
                         <td>Total Allotment Release as <br>
                         of the <strong><u>{{get_month_quarter($expense->month)}}</u></strong> quarter</td>
-                        <td>{{format_amount($expense->transaction()->allotment_available)}}</td>
+                        <td>{{format_amount($monthly_allotment)}}</td>
                     </tr>
                     <tr>
                         <td>Less: Total obligation Incurred</td>

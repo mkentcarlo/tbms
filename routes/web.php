@@ -133,6 +133,8 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::get('expenses/get_office_allotment_balance',        'admin\ExpenseController@get_office_allotment_balance')->name('expense.get_office_allotment_balance');
         Route::get('expenses/print/{id}',        'admin\ExpenseController@print')->name('expense.print');
 
+        Route::get('reports', 'admin\ReportsController@index')->name('reports.index');
+
         Route::resource('roles',        'RolesController');
         Route::resource('mail',        'MailController');
         Route::get('prepareSend/{id}',        'MailController@prepareSend')->name('prepareSend');

@@ -71,7 +71,9 @@ class ExpenseController extends Controller
     public function print($id)
     {
         $expense = Expense::find($id);
-        return view('dashboard.expenses.print', ['expense' => $expense]);
+        $allotment = new Allotment();
+        $monthly_allotment = $allotment->monthly_allocation($expense->office_id, $expense->month, $expense->year);
+        return view('dashboard.expenses.print', ['expense' => $expense, 'monthly_allotment' => $monthly_allotment]);
     }
 
      /**
