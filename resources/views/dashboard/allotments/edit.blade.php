@@ -28,7 +28,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="month">Month</label>
                             <div class="col-md-9">
-                            <select name="month" id="month" class="form-control" required>
+                            <select name="month" id="month" class="form-control">
                               <option value="">-----------</option>
                               @foreach(range(1, 12) as $m)
                                 <option value="{{$m}}" {{$m == $allotment->month ? 'selected' : ''}}>{{date('F', mktime(0, 0, 0, $m, 1))}}</option>
