@@ -112,7 +112,6 @@ class AllotmentController extends Controller
     {
         $validatedData = $request->validate([
             'year'       => 'required',
-            'month'       => 'required',
             'office_id'       => 'required',
             'amount'       => 'required',
         ]);
