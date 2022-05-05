@@ -90,7 +90,7 @@
                 <table class="table office">
                     <tr>
                         <td>OFFICE:</td>
-                        <td>{{$expense->office->category->parent->name}}</td>
+                        <td>{{$expense->office->category->parent->name.' - '.$expense->office->category->name}}</td>
                     </tr>
                     <tr>
                         <td>PROGRAM:</td>
@@ -173,7 +173,7 @@
                 <table class="table office">
                     <tr>
                         <td>OFFICE:</td>
-                        <td>{{$expense->office->category->parent->name}}</td>
+                        <td>{{$expense->office->category->parent->name.' - '.$expense->office->category->name}}</td>
                     </tr>
                     <tr>
                         <td>PROGRAM:</td>
