@@ -35,7 +35,7 @@ class AllotmentController extends Controller
         if($office_id!=''){
             $query = $query->where('office_id', $office_id);
         }
-        $allotments = $query->orderBy('month', 'asc')->get();
+        $allotments = $query->orderBy('id', 'asc')->get();
         return view('dashboard.allotments.index',['allotments' => $allotments, 'offices' => $offices]);
     }
 

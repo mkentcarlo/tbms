@@ -28,8 +28,8 @@
                             <th>ID</th>
                             <th>Year</th>
                             <th>Month</th>
+                            <th>Office Group</th>
                             <th>Office</th>
-                            <th>Office group</th>
                             <th>Expense Class</th>
                             <th>Amount</th>
                             <th>Remarks</th>
