@@ -72,7 +72,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="amount">Amount</label>
                             <div class="col-md-9">
-                            <input type="number" steps="0.01" class="form-control" name="amount" required/>
+                            <input type="number" steps="0.001" class="form-control" name="amount" required/>
                             <span class="help-block">Please enter amount</span>
                             </div>
                           </div>
