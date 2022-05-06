@@ -77,7 +77,7 @@ class AllotmentController extends Controller
         $transaction->type = 'allotment';
         $transaction->recepient = $allotment->office_id;
         $transaction->amount = $allotment->amount;
-        $transaction->ending_balance = $allotment->monthly_allocation($allotment->office_id, $allotment->month, $allotment->year);
+        $transaction->ending_balance = ( $allotment->monthly_allocation($allotment->office_id, $allotment->month, $allotment->year) - Expense::get_total_expenses($office_id, null, $year)) + $allotment->amount;
         $transaction->remarks = $allotment->remarks;
         $transaction->transaction_date = $allotment->created_at;
         $transaction->allotment_total_quarter = 0;
