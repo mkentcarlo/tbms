@@ -50,7 +50,7 @@ class Expense extends Model
         // $latest_expense = $expense->where('month', $month)->where('year', $year)->where('office_id', $office_id)->orderBy('id', 'desc')->first();
         $latest_transaction = Transaction::whereHas('reference', function($q) use($office_id){
             $q->where('office_id', $office_id);
-        })->where('ending_blance', '<>', 0)->orderBy('id', 'desc')->first();
+        })->where('ending_balance', '<>', 0)->orderBy('id', 'desc')->first();
         $monthly_allocation = $allotment->monthly_allocation($office_id, $month, $year);
         if(!$latest_transaction){ 
             return $allotment->monthly_allocation($office_id, $month, $year);
