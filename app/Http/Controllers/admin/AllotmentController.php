@@ -8,6 +8,7 @@ use App\Models\Allotment;
 use App\Models\Office;
 use App\Models\OfficeCategory;
 use App\Models\Transaction;
+use App\Models\Expense;
 
 
 class AllotmentController extends Controller
