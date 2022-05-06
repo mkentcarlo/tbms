@@ -84,7 +84,7 @@
                 Republic of the Philippines <br>
                 <strong>PROVINCE OF AGUSAN DEL SUR</strong><br>
                 <strong>Municipality of Talacogon</strong>
-                <p class="date">Date: {{$expense->created_at}}</p>
+                <p class="date">Date: {{format_date($expense->created_at)}}</p>
             </div>
             <div class="content">
                 <table class="table office">
@@ -167,7 +167,7 @@
                 Republic of the Philippines <br>
                 <strong>PROVINCE OF AGUSAN DEL SUR</strong><br>
                 <strong>Municipality of Talacogon</strong>
-                <p class="date">Date: {{$expense->created_at}}</p>
+                <p class="date">Date: {{format_date($expense->created_at)}}</p>
             </div>
             <div class="content">
                 <table class="table office">
