@@ -12,3 +12,7 @@ function format_amount($amount)
 {
     return "₱".number_format($amount,2);
 }
+
+function format_date($date){
+    return date('Y-m-d', strtotime($date));
+}
