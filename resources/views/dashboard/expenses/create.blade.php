@@ -110,7 +110,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="amount">Amount</label>
                             <div class="col-md-9">
-                            <input type="number" class="form-control" name="amount" id="amount" required/>
+                            <input type="text" class="form-control" name="amount" id="amount" required/>
                             <span class="help-block">Please enter amount</span>
                             </div>
                           </div>
