@@ -193,7 +193,7 @@
       });
     });
     $('#frmCreateExpense').on('submit', function(e){
-      if($('input#ending_balance').val() <= 0){
+      if($('input#ending_balance').val() < 0){
         alert('You have insufficient balance!')
         e.preventDefault();
       }
