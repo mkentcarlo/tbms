@@ -61,7 +61,7 @@
                                 <td>{{number_format($expense->transaction()->ending_balance, 2)}}</td>
                                 <td>{{$expense->transaction()->remarks}}</td>
                                 <td>{{$expense->transaction()->transaction_date}}</td>
-                                <td><a class="btn btn-sm btn-primary" href="{{route('expense.edit',['id' => $expense->id])}}">Edit</a>
+                                <!-- <td><a class="btn btn-sm btn-primary" href="{{route('expense.edit',['id' => $expense->id])}}">Edit</a> -->
                                 <a class="btn btn-sm btn-danger delete" href="{{route('expense.delete',['id' => $expense->id])}}">Delete</a>
                               <a class="btn btn-sm btn-success print" href="{{route('expense.print',['id' => $expense->id])}}">Print</a></td>
                               </tr>
