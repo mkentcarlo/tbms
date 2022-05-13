@@ -52,6 +52,9 @@ if(!function_exists('renderDropdown')){
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link" href="{{route('expense.index')}}">Manage Expenses</a>
             </li>
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{route('reports.index')}}">Reports</a>
+            </li>
         <!-- @if(isset($appMenus['sidebar menu']))
             @foreach($appMenus['sidebar menu'] as $menuel)
                 @if($menuel['slug'] === 'link')
