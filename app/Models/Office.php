@@ -41,4 +41,15 @@ class Office extends Model
                 ->where('transaction_date', '<=', $end)
                 ->sum('amount');
     }
+
+    /**
+     * Get the User that owns the Notes.
+     */
+    public function getExpenseClassesByDescription()
+    {
+        return $this->where('description', $this->description)->get();
+    }
+
 }
+
+

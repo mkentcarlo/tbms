@@ -60,6 +60,7 @@
                                         <th>Office Group</th>
                                         <th>Office</th>
                                         <th>Expense Class</th>
+                                        <th>Appropriation</th>
                                         <th>Allotment</th>
                                         <th>Balance</th>
                                         <th>Total Amount</th>
@@ -81,27 +82,55 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+                                                <td></td>
                                             </tr>
-                                            <?php foreach($office->expense_classes as $expense_class): 
-                                                $allotment_total = $expense_class->getAllotmentTotal(@$filters['date_from'], @$filters['date_to']);
-                                                $expenses_total = $expense_class->getExpensesTotal(@$filters['date_from'], @$filters['date_to']);
-                                                $balance = $allotment_total - $expenses_total;
-
-                                                $total_allotment_total+=$allotment_total;
-                                                $total_expenses_total+=$expenses_total;
-                                                $total_balance_total+=$balance;
+                                            <?php foreach($office->getUniqueDescriptions() as $officebydescription): 
+                                                $d_total_allotment_total = 0;
+                                                $d_total_expenses_total = 0;
+                                                $d_total_balance_total = 0;
                                                 ?>
                                                 <tr>
                                                     <td colspan="2"></td>
-                                                    <td><?php echo $expense_class->name; ?></td>
-                                                    <td><?php echo format_amount($allotment_total) ?></td>
-                                                    <td><?php echo format_amount($expenses_total) ?></td>
-                                                    <td><?php echo format_amount($balance) ?></td>
+                                                    <td><?php echo $officebydescription->description; ?></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
                                                 </tr>
+                                                <?php foreach($officebydescription->getExpenseClassesByDescription() as $expense_class): 
+                                                    $allotment_total = $expense_class->getAllotmentTotal(@$filters['date_from'], @$filters['date_to']);
+                                                    $expenses_total = $expense_class->getExpensesTotal(@$filters['date_from'], @$filters['date_to']);
+                                                    $balance = $allotment_total - $expenses_total;
+
+                                                    $total_allotment_total+=$allotment_total;
+                                                    $total_expenses_total+=$expenses_total;
+                                                    $total_balance_total+=$balance;
+
+                                                    $d_total_allotment_total+=$allotment_total;
+                                                    $d_total_expenses_total+=$expenses_total;
+                                                    $d_total_balance_total+=$balance;
+
+                                                    $appropriation = $expense_class->getAppropriation(@$filters['year']);
+                                                    ?>
+                                                    <tr>
+                                                        <td colspan="2"></td>
+                                                        <td><?php echo $expense_class->name; ?></td>
+                                                        <td><?php echo format_amount($appropriation) ?></td>
+                                                        <td><?php echo format_amount($allotment_total) ?></td>
+                                                        <td><?php echo format_amount($expenses_total) ?></td>
+                                                        <td><?php echo format_amount($balance) ?></td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                                    <tr>
+                                                        <td colspan="4"></td>
+                                                        <th><?php echo format_amount($d_total_allotment_total) ?></th>
+                                                        <th><?php echo format_amount($d_total_expenses_total) ?></th>
+                                                        <th><?php echo format_amount($d_total_balance_total) ?></th>
+                                                    </tr>
+
                                             <?php endforeach; ?>
                                             <tr>
-                                                <th colspan="2"></th>
-                                                <th></th>
+                                                <th colspan="4"></th>
                                                 <th>{{format_amount($total_allotment_total)}}</th>
                                                 <th>{{format_amount($total_expenses_total)}}</th>
                                                 <th>{{format_amount($total_balance_total)}}</th>
