@@ -75,6 +75,7 @@
                                             $total_allotment_total = 0;
                                             $total_expenses_total = 0;
                                             $total_balance_total = 0;
+                                            $total_appropriation = 0;
                                             ?>
                                             <tr>
                                                 <th colspan="2" class="text-right"><?php echo $office->name; ?></th>
@@ -84,6 +85,7 @@
                                                 $d_total_allotment_total = 0;
                                                 $d_total_expenses_total = 0;
                                                 $d_total_balance_total = 0;
+                                                $d_total_appropriation = 0;
                                                 ?>
                                                 <tr>
                                                     <td colspan="2"></td>
