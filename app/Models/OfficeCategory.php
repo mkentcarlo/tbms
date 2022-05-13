@@ -35,13 +35,13 @@ class OfficeCategory extends Model
     {
         return $this->hasMany('App\Models\Office', 'office_category_id');
     }
-    
+
     /**
      * Get the User that owns the Notes.
      */
     public function getUniqueDescriptions()
     {
-        return Office::distinct('description')->get();
+        return Office::select('description')->groupBy('description')->get();
     }
     
 }
