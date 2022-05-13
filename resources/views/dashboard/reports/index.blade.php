@@ -57,8 +57,7 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Office Group</th>
-                                        <th>Office</th>
+                                        <th colspan="2">Office Group</th>
                                         <th>Expense Class</th>
                                         <th>Appropriation</th>
                                         <th>Allotment</th>
@@ -69,7 +68,8 @@
                                 <tbody>
                                     <?php foreach($office_groups as $office_group): ?>
                                         <tr>
-                                            <th colspan="6"><?php echo $office_group->name; ?></th>
+                                            <th><?php echo $office_group->name; ?></th>
+                                            <th  colspan="6"></th>
                                         </tr>
                                         <?php foreach($office_group->children as $office): 
                                             $total_allotment_total = 0;
@@ -77,8 +77,8 @@
                                             $total_balance_total = 0;
                                             ?>
                                             <tr>
-                                                <td></td>
-                                                <th colspan="6" class="text-right"><?php echo $office->name; ?></th>
+                                                <th colspan="2" class="text-right"><?php echo $office->name; ?></th>
+                                                <th colspan="5" class="text-right"></th>
                                             </tr>
                                             <?php foreach($office->getUniqueDescriptions() as $officebydescription): 
                                                 $d_total_allotment_total = 0;
@@ -87,11 +87,8 @@
                                                 ?>
                                                 <tr>
                                                     <td colspan="2"></td>
-                                                    <th colspan="5"><?php echo $officebydescription->description; ?></th>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <th><?php echo $officebydescription->description; ?></th>
+                                                    <th colspan="4"></th>
                                                 </tr>
                                                 <?php foreach($officebydescription->getExpenseClassesByDescription() as $expense_class): 
                                                     $allotment_total = $expense_class->getAllotmentTotal(@$filters['date_from'], @$filters['date_to']);
