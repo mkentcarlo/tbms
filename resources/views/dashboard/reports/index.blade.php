@@ -77,12 +77,8 @@
                                             $total_balance_total = 0;
                                             ?>
                                             <tr>
-                                                <th colspan="2" class="text-right"><?php echo $office->name; ?></th>
                                                 <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <th colspan="6" class="text-right"><?php echo $office->name; ?></th>
                                             </tr>
                                             <?php foreach($office->getUniqueDescriptions() as $officebydescription): 
                                                 $d_total_allotment_total = 0;
@@ -91,7 +87,7 @@
                                                 ?>
                                                 <tr>
                                                     <td colspan="2"></td>
-                                                    <td><?php echo $officebydescription->description; ?></td>
+                                                    <th colspan="5"><?php echo $officebydescription->description; ?></th>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
