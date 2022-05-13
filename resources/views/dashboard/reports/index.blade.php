@@ -97,6 +97,36 @@
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
+                                                <?php foreach($officebydescription->getExpenseClassesByDescription() as $expense_class): 
+                                                    $allotment_total = $expense_class->getAllotmentTotal(@$filters['date_from'], @$filters['date_to']);
+                                                    $expenses_total = $expense_class->getExpensesTotal(@$filters['date_from'], @$filters['date_to']);
+                                                    $balance = $allotment_total - $expenses_total;
+
+                                                    $total_allotment_total+=$allotment_total;
+                                                    $total_expenses_total+=$expenses_total;
+                                                    $total_balance_total+=$balance;
+
+                                                    $d_total_allotment_total+=$allotment_total;
+                                                    $d_total_expenses_total+=$expenses_total;
+                                                    $d_total_balance_total+=$balance;
+
+                                                    $appropriation = $expense_class->getAppropriation(@$filters['year']);
+                                                    ?>
+                                                    <tr>
+                                                        <td colspan="2"></td>
+                                                        <td><?php echo $expense_class->name; ?></td>
+                                                        <td><?php echo format_amount($appropriation) ?></td>
+                                                        <td><?php echo format_amount($allotment_total) ?></td>
+                                                        <td><?php echo format_amount($expenses_total) ?></td>
+                                                        <td><?php echo format_amount($balance) ?></td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                                    <tr>
+                                                        <td colspan="4"></td>
+                                                        <th><?php echo format_amount($d_total_allotment_total) ?></th>
+                                                        <th><?php echo format_amount($d_total_expenses_total) ?></th>
+                                                        <th><?php echo format_amount($d_total_balance_total) ?></th>
+                                                    </tr>
 
                                             <?php endforeach; ?>
                                             <tr>
