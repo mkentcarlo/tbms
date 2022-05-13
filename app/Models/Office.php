@@ -45,9 +45,9 @@ class Office extends Model
     /**
      * Get the User that owns the Notes.
      */
-    public function getExpenseClassesByDescription()
+    public function getExpenseClassesByDescription($category_id)
     {
-        return $this->where('description', $this->description)->get();
+        return $this->where('description', $this->description)->where('office_category_id', $category_id)->get();
     }
 
 }

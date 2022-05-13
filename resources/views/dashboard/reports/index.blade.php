@@ -90,7 +90,7 @@
                                                     <th><?php echo $officebydescription->description; ?></th>
                                                     <th colspan="4"></th>
                                                 </tr>
-                                                <?php foreach($officebydescription->getExpenseClassesByDescription() as $expense_class): 
+                                                <?php foreach($officebydescription->getExpenseClassesByDescription($office->id) as $expense_class): 
                                                     $allotment_total = $expense_class->getAllotmentTotal(@$filters['date_from'], @$filters['date_to']);
                                                     $expenses_total = $expense_class->getExpensesTotal(@$filters['date_from'], @$filters['date_to']);
                                                     $balance = $allotment_total - $expenses_total;
