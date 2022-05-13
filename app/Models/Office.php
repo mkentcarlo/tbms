@@ -23,4 +23,22 @@ class Office extends Model
     {
         return Allotment::where('year', $year)->where('month', '0')->where('office_id', $this->id)->sum('amount');
     }
+
+    public function getAllotmentTotal($start ='', $end='')
+    {
+        return Transaction::where('type', 'allotment')
+                ->where('recepient', $this->id)
+                ->where('transaction_date', '>=', $start)
+                ->where('transaction_date', '<=', $end)
+                ->sum('amount');
+    }
+
+    public function getExpensesTotal($start ='', $end='')
+    {
+        return Transaction::where('type', 'expense')
+                ->where('recepient', $this->id)
+                ->where('transaction_date', '>=', $start)
+                ->where('transaction_date', '<=', $end)
+                ->sum('amount');
+    }
 }

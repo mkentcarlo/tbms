@@ -29,7 +29,8 @@ class ReportsController extends Controller
      */
     public function index(Request $request)
     {
-        return view('dashboard.reports.index');
+        $office_groups = OfficeCategory::where('parent_id', 0)->get();
+        return view('dashboard.reports.index', ['office_groups' => $office_groups, 'filters' => $request->all()]);
     }
     
     

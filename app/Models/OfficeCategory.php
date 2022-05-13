@@ -18,5 +18,22 @@ class OfficeCategory extends Model
     {
         return $this->belongsTo('App\Models\OfficeCategory', 'parent_id');
     }
+
+    /**
+     * Get the User that owns the Notes.
+     */
+    public function children()
+    {
+        return $this->hasMany('App\Models\OfficeCategory', 'parent_id');
+    }
+    
+
+    /**
+     * Get the User that owns the Notes.
+     */
+    public function expense_classes()
+    {
+        return $this->hasMany('App\Models\Office', 'office_category_id');
+    }
     
 }
