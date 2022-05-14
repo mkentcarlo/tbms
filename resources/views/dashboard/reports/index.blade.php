@@ -140,19 +140,19 @@
                                             <?php endforeach; ?>
                                             <tr>
                                                 <th colspan="3"></th>
-                                                <th>{{format_amount($overall_total_allotment_total)}}</th>
-                                                <th>{{format_amount($overall_total_expenses_total)}}</th>
-                                                <th>{{format_amount($overall_total_balance_total)}}</th>
-                                                <th>{{format_amount($overall_total_appropriation)}}</th>
+                                                <th>{{format_amount($total_appropriation)}}</th>
+                                                <th>{{format_amount($total_allotment_total)}}</th>
+                                                <th>{{format_amount($total_expenses_total)}}</th>
+                                                <th>{{format_amount($total_balance_total)}}</th>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php endforeach; ?>
                                     <tr>
                                         <th colspan="3"></th>
-                                        <th>{{format_amount($total_appropriation)}}</th>
-                                        <th>{{format_amount($total_allotment_total)}}</th>
-                                        <th>{{format_amount($total_expenses_total)}}</th>
-                                        <th>{{format_amount($total_balance_total)}}</th>
+                                        <th>{{format_amount($overall_total_allotment_total)}}</th>
+                                        <th>{{format_amount($overall_total_expenses_total)}}</th>
+                                        <th>{{format_amount($overall_total_balance_total)}}</th>
+                                        <th>{{format_amount($overall_total_appropriation)}}</th>
                                     </tr>
                                 </tbody>
                             </table>
