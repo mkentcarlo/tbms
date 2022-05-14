@@ -41,7 +41,7 @@ class OfficeCategory extends Model
      */
     public function getUniqueDescriptions()
     {
-        return Office::select('description')->groupBy('description')->orderByRaw("FIELD( description, 'Personal Services') ASC")->get();
+        return Office::select('description')->groupBy('description')->orderByRaw("FIELD(description, 'Personal Services') DESC")->get();
     }
     
 }
