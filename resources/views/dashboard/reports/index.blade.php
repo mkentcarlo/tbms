@@ -57,12 +57,12 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th colspan="2">Office Group</th>
-                                        <th>Expense Class</th>
-                                        <th>Appropriation</th>
-                                        <th>Allotment</th>
-                                        <th>Obligation Incurred</th>
-                                        <th>Unobligated Balance</th>
+                                        <th colspan="2">OFFICE GROUP</th>
+                                        <th>EXPENSE CLASS</th>
+                                        <th>APPROPRIATION</th>
+                                        <th>ALLOTMENT</th>
+                                        <th>OBLIGATION INCURRED</th>
+                                        <th>UNOBLIGATED BALANCE</th>
                                     </tr>
                                 </thead>
                                 <tbody>
