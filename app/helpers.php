@@ -10,7 +10,7 @@ function get_month_quarter($m)
 
 function format_amount($amount)
 {
-    return "₱".number_format($amount,2);
+    return number_format($amount,2);
 }
 
 function format_date($date){

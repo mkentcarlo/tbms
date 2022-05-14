@@ -61,12 +61,17 @@
                                         <th>Expense Class</th>
                                         <th>Appropriation</th>
                                         <th>Allotment</th>
-                                        <th>Balance</th>
+                                        <th>Obligation Incurred</th>
                                         <th>Total Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach($office_groups as $office_group): ?>
+                                    <?php 
+                                    $overall_total_allotment_total = 0;
+                                    $overall_total_expenses_total = 0;
+                                    $overall_total_balance_total = 0;
+                                    $overall_total_appropriation = 0;
+                                    foreach($office_groups as $office_group): ?>
                                         <tr>
                                             <th><?php echo $office_group->name; ?></th>
                                             <th  colspan="6"></th>
@@ -108,6 +113,11 @@
                                                     $d_total_balance_total+=$balance;
                                                     $d_total_appropriation+=$appropriation;
 
+                                                    $overall_total_allotment_total+=$allotment_total;
+                                                    $overall_total_expenses_total+=$expenses_total;
+                                                    $overall_total_balance_total+=$balance;
+                                                    $overall_total_appropriation+=$appropriation;
+
                                                     
                                                     ?>
                                                     <tr>
@@ -130,14 +140,20 @@
                                             <?php endforeach; ?>
                                             <tr>
                                                 <th colspan="3"></th>
-                                                <th>{{format_amount($total_appropriation)}}</th>
-                                                <th>{{format_amount($total_allotment_total)}}</th>
-                                                <th>{{format_amount($total_expenses_total)}}</th>
-                                                <th>{{format_amount($total_balance_total)}}</th>
+                                                <th>{{format_amount($overall_total_allotment_total)}}</th>
+                                                <th>{{format_amount($overall_total_expenses_total)}}</th>
+                                                <th>{{format_amount($overall_total_balance_total)}}</th>
+                                                <th>{{format_amount($overall_total_appropriation)}}</th>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php endforeach; ?>
-                                    
+                                    <tr>
+                                        <th colspan="3"></th>
+                                        <th>{{format_amount($total_appropriation)}}</th>
+                                        <th>{{format_amount($total_allotment_total)}}</th>
+                                        <th>{{format_amount($total_expenses_total)}}</th>
+                                        <th>{{format_amount($total_balance_total)}}</th>
+                                    </tr>
                                 </tbody>
                             </table>
                         @endif
