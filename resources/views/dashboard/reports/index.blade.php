@@ -61,8 +61,8 @@
                                         <th>Expense Class</th>
                                         <th>Appropriation</th>
                                         <th>Allotment</th>
+                                        <th>Unobligated </th>
                                         <th>Obligation Incurred</th>
-                                        <th>Total Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
