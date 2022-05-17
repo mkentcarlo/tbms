@@ -26,7 +26,10 @@ class Office extends Model
 
     public function getAllotmentTotal($start ='', $end='')
     {
-        return Transaction::where('type', 'allotment')
+        return Transaction::with('reference')->where('type', 'allotment')
+                ->whereHas('reference', function($q){
+                    $q->where('month', '<>', 0);
+                })
                 ->where('recepient', $this->id)
                 ->where('transaction_date', '>=', $start)
                 ->where('transaction_date', '<=', $end)
