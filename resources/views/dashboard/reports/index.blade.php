@@ -113,11 +113,6 @@
                                                     $d_total_balance_total+=$balance;
                                                     $d_total_appropriation+=$appropriation;
 
-                                                    $overall_total_allotment_total+=$allotment_total;
-                                                    $overall_total_expenses_total+=$expenses_total;
-                                                    $overall_total_balance_total+=$balance;
-                                                    $overall_total_appropriation+=$appropriation;
-
                                                     
                                                     ?>
                                                     <tr>
@@ -145,7 +140,12 @@
                                                 <th>{{format_amount($total_expenses_total)}}</th>
                                                 <th>{{format_amount($total_balance_total)}}</th>
                                             </tr>
-                                        <?php endforeach; ?>
+                                        <?php 
+                                        $overall_total_allotment_total+=$total_allotment_total;
+                                        $overall_total_appropriation+=$total_appropriation;
+                                        $overall_total_balance_total+=$total_balance_total;
+                                        $overall_total_expenses_total+=$total_expenses_total;
+                                    endforeach; ?>
                                     <?php endforeach; ?>
                                     <tr>
                                         <th colspan="3"></th>
