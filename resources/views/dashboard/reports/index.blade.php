@@ -152,7 +152,7 @@
                                         <th>{{format_amount($overall_total_appropriation)}}</th>
                                         <th>{{format_amount($overall_total_allotment_total)}}</th>
                                         <th>{{format_amount($overall_total_expenses_total)}}</th>
-                                        <th>{{format_amount($overall_total_appropriation)}}</th>
+                                        <th>{{format_amount($overall_total_balance_total)}}</th>
                                     </tr>
                                 </tbody>
                             </table>
