@@ -42,11 +42,11 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label for="">From</label>
-                                    <input type="date" class="form-control" name="date_from" readonly value="{{@$filters['date_from']}}" />
+                                    <input type="date" class="form-control" name="date_from" value="{{@$filters['date_from']}}" />
                                 </div>
                                 <div class="col-md-3">
                                     <label for="">To</label>
-                                    <input type="date" class="form-control" name="date_to" readonly {{@$filters['date_to']}} />
+                                    <input type="date" class="form-control" name="date_to" {{@$filters['date_to']}} />
                                 </div>
                             </div>
                             <div class="text-right">
