@@ -51,7 +51,7 @@ class Expense extends Model
         // $latest_transaction = Transaction::where('recepient', $office_id)->where('ending_balance', '<>', 0)->orderBy('id', 'desc')->first();
         $monthly_allocation = $allotment->monthly_allocation($office_id, $month, $year);
         // if(!$latest_transaction){ 
-        return $allotment->monthly_allocation($office_id, $month, $year) - self::get_total_expenses($office_id, $month, $year);
+        return $allotment->monthly_allocation($office_id, $month, $year) - self::get_total_expenses($office_id, null, $year);
         // }
         // return $latest_transaction->ending_balance;
     }
