@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table>
     <tbody>
         <?php 
         foreach($exportdata as $data): ?>
