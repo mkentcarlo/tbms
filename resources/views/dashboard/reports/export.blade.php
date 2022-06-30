@@ -3,12 +3,11 @@
     <tbody>
         <?php 
         foreach($exportdata as $k => $data): 
-        // if($k > 30){
-        //     continue;
-        // }
         ?>
             <tr>
-                <?php foreach($data as $d): ?>
+                <?php foreach($data as $d): 
+                    $d = str_replace('&', 'and', $d);
+                    ?>
                     <td><?php echo stripslashes($d); ?></td> 
                 <?php endforeach; ?>
             </tr>
