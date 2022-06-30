@@ -2,7 +2,7 @@
     <tbody>
         <?php 
         foreach($exportdata as $k => $data): 
-        if($k > 6){
+        if($k > 30){
             continue;
         }
         ?>
