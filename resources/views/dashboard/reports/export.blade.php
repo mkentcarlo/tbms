@@ -1,10 +1,11 @@
+{{dd($exportdata)}}
 <table>
     <tbody>
         <?php 
         foreach($exportdata as $k => $data): 
-        if($k > 26){
-            continue;
-        }
+        // if($k > 30){
+        //     continue;
+        // }
         ?>
             <tr>
                 <?php foreach($data as $d): ?>
