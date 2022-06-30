@@ -1,4 +1,3 @@
-{{dd($exportdata)}}
 <table>
     <tbody>
         <?php 
