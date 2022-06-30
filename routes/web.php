@@ -49,7 +49,8 @@ Route::group(['middleware' => ['get.menu']], function () {
             Route::get('/brand-buttons', function(){    return view('dashboard.buttons.brand-buttons'); });
         });
         Route::prefix('icon')->group(function () {  // word: "icons" - not working as part of adress
-            Route::get('/coreui-icons', function(){         return view('dashboard.icons.coreui-icons'); });
+            Route::get('/coreui-icons', function(){         return view('dashboard.icons.coreu
+                i-icons'); });
             Route::get('/flags', function(){                return view('dashboard.icons.flags'); });
             Route::get('/brands', function(){               return view('dashboard.icons.brands'); });
         });
@@ -134,6 +135,7 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::get('expenses/print/{id}',        'admin\ExpenseController@print')->name('expense.print');
 
         Route::get('reports', 'admin\ReportsController@index')->name('reports.index');
+        Route::get('reports/export', 'admin\ReportsController@export')->name('reports.export');
 
         Route::resource('roles',        'RolesController');
         Route::resource('mail',        'MailController');

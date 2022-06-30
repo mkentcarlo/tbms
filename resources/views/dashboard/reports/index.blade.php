@@ -51,18 +51,18 @@
                             </div>
                             <div class="text-right">
                                 <button class="btn btn-primary mb-2" value="yes" name="generate_report">Generate Report</button>
+                                <a class="btn btn-primary mb-2" name="generate_report" href="{{route('reports.export').'?'.http_build_query($filters)}}">Print</a>
                             </div>
                         </form>
                         @if(isset($filters['generate_report']))
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th colspan="2">OFFICE GROUP</th>
-                                        <th>EXPENSE CLASS</th>
+                                        <th>PROGRAM</th>
                                         <th>APPROPRIATION</th>
                                         <th>ALLOTMENT</th>
-                                        <th>OBLIGATION INCURRED</th>
-                                        <th>UNOBLIGATED BALANCE</th>
+                                        <th>OBLIGATION <br> INCURRED</th>
+                                        <th>UNOBLIGATED <br> BALANCE</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,8 +73,11 @@
                                     $overall_total_appropriation = 0;
                                     foreach($office_groups as $office_group): ?>
                                         <tr>
-                                            <th><?php echo $office_group->name; ?></th>
-                                            <th  colspan="6"></th>
+                                            <th class="pl-1"><?php echo $office_group->name; ?></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                         <?php foreach($office_group->children as $office): 
                                             $total_allotment_total = 0;
@@ -83,8 +86,11 @@
                                             $total_appropriation = 0;
                                             ?>
                                             <tr>
-                                                <th colspan="2" class="text-right"><?php echo $office->name; ?></th>
-                                                <th colspan="5" class="text-right"></th>
+                                                <th class="pl-2"><?php echo $office->name; ?></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
                                             </tr>
                                             <?php foreach($office->getUniqueDescriptions() as $officebydescription): 
                                                 $d_total_allotment_total = 0;
@@ -93,9 +99,11 @@
                                                 $d_total_appropriation = 0;
                                                 ?>
                                                 <tr>
-                                                    <td colspan="2"></td>
-                                                    <th><?php echo $officebydescription->description; ?></th>
-                                                    <th colspan="4"></th>
+                                                    <th class="pl-3"><?php echo $officebydescription->description; ?></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
                                                 </tr>
                                                 <?php foreach($officebydescription->getExpenseClassesByDescription($office->id) as $expense_class): 
                                                     $allotment_total = $expense_class->getAllotmentTotal(@$filters['date_from'], @$filters['date_to']);
@@ -116,8 +124,7 @@
                                                     
                                                     ?>
                                                     <tr>
-                                                        <td colspan="2"></td>
-                                                        <td><?php echo $expense_class->name; ?></td>
+                                                        <td class="pl-4"><?php echo $expense_class->name; ?></td>
                                                         <td><?php echo format_amount($appropriation) ?></td>
                                                         <td><?php echo format_amount($allotment_total) ?></td>
                                                         <td><?php echo format_amount($expenses_total) ?></td>
@@ -125,7 +132,7 @@
                                                     </tr>
                                                 <?php endforeach; ?>
                                                     <tr>
-                                                        <td colspan="3"></td>
+                                                        <td><b>Sub-total</b></td>
                                                         <th><?php echo format_amount($d_total_appropriation) ?></th>
                                                         <th><?php echo format_amount($d_total_allotment_total) ?></th>
                                                         <th><?php echo format_amount($d_total_expenses_total) ?></th>
@@ -133,8 +140,8 @@
                                                     </tr>
 
                                             <?php endforeach; ?>
-                                            <tr>
-                                                <th colspan="3"></th>
+                                            <tr class="bottom-bordered">
+                                                <th><b>Sub-total</b></th>
                                                 <th>{{format_amount($total_appropriation)}}</th>
                                                 <th>{{format_amount($total_allotment_total)}}</th>
                                                 <th>{{format_amount($total_expenses_total)}}</th>
@@ -148,7 +155,7 @@
                                     endforeach; ?>
                                     <?php endforeach; ?>
                                     <tr>
-                                        <th colspan="3"></th>
+                                        <th><b>Grand Total</b></th>
                                         <th>{{format_amount($overall_total_appropriation)}}</th>
                                         <th>{{format_amount($overall_total_allotment_total)}}</th>
                                         <th>{{format_amount($overall_total_expenses_total)}}</th>
@@ -168,6 +175,21 @@
 
 @section('css')
 <link href="{{ asset('css/bootstrap-datatable.css') }}" rel="stylesheet">
+<style>
+    table tbody :is(td,th) {
+        border-bottom: none !important;
+        border-top: none !important;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+    table thead :is(td,th) {
+        text-align: center;
+    }
+    .bottom-bordered {
+        border-bottom: 2px solid #d8dbe0 !important;
+        border-top: 2px solid #d8dbe0 !important;
+    }
+</style>
 @endsection
 
 

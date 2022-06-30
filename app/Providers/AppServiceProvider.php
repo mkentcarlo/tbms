@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use \Maatwebsite\Excel\Sheet;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array $style) {
+            $sheet->getDelegate()->getStyle($cellRange)->applyFromArray($style);
+        });
     }
 
     /**

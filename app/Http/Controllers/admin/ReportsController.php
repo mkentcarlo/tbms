@@ -8,6 +8,8 @@ use App\Models\Allotment;
 use App\Models\Office;
 use App\Models\OfficeCategory;
 use App\Models\Transaction;
+use Excel;
+use App\Exports\ExpensesSummaryExport;
 
 
 class ReportsController extends Controller
@@ -31,6 +33,11 @@ class ReportsController extends Controller
     {
         $office_groups = OfficeCategory::where('parent_id', 0)->get();
         return view('dashboard.reports.index', ['office_groups' => $office_groups, 'filters' => $request->all()]);
+    }
+
+    public function export(Request $request) 
+    {
+        return Excel::download(new ExpensesSummaryExport($request->all()), 'invoices.xlsx');
     }
     
     
