@@ -5,7 +5,7 @@
         ?>
             <tr>
                 <?php foreach($data as $d): ?>
-                    <td><?php echo stripslashes($id); ?></td> 
+                    <td><?php echo stripslashes($d); ?></td> 
                 <?php endforeach; ?>
             </tr>
         <?php endforeach; ?>
