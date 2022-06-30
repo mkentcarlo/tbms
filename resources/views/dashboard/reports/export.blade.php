@@ -1,11 +1,10 @@
-{{dd($exportdata)}}
 <table>
     <tbody>
         <?php 
         foreach($exportdata as $data): ?>
             <tr>
                 <?php foreach($data as $d): ?>
-                    <td><?php echo $d; ?></td> 
+                    <td><?php echo 'ddf'; ?></td> 
                 <?php endforeach; ?>
             </tr>
         <?php endforeach; ?>
