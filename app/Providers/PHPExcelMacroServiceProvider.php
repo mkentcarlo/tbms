@@ -71,7 +71,7 @@ class PHPExcelMacroServiceProvider extends ServiceProvider
 
         Sheet::macro('textRotation', function (Sheet $sheet, string $cellRange, int $degrees) {
             $sheet->getDelegate()->getStyle($cellRange)->getAlignment()->setTextRotation($degrees);
-        });
+        }); 
 
     }
 

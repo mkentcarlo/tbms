@@ -16,6 +16,7 @@ use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Carbon\Carbon;
 
 class ExpensesSummaryExport implements FromView, WithEvents
 {
@@ -27,7 +28,7 @@ class ExpensesSummaryExport implements FromView, WithEvents
     {
         $this->filters = $filters;
         $this->bordered_cells = [
-            'A1:E1'
+            'A2:E2'
         ];
 
         $row_counter = 0;
@@ -41,12 +42,23 @@ class ExpensesSummaryExport implements FromView, WithEvents
 
         $exportdata = [];
 
+        // echo Carbon::createFromFormat('Y-m-d', $filters['date_to'])->format('d M Y');
+        // exit;
+
+        // echo '<center><b>MUNICIPALITY OF TALACOGON <br> PROVINCE OF AGUSAN DEL SUR <br> CURRENT LEGISLATIVE APPROPRIATION <br>STATUS OF APPRPRIATIONS, ALLOTMENT AND OBLIGATIONS<br>'.Carbon::createFromFormat('Y-m-d', $filters['date_from'])->format('d M Y').' to '.Carbon::createFromFormat('Y-m-d', $filters['date_to'])->format('d M Y').'</center></b>';
+        // exit;
+
+
         $exportdata[] = [
-            'PROGRAM',
-            'APPROPRIATION',
-            'ALLOTMENT',
-            'OBLIGATION <br> INCURRED',
-            'UNOBLIGATED <br> BALANCE',
+            '<center><b>MUNICIPALITY OF TALACOGON <br> PROVINCE OF AGUSAN DEL SUR <br> CURRENT LEGISLATIVE APPROPRIATION <br>STATUS OF APPRPRIATIONS, ALLOTMENT AND OBLIGATIONS <br> '.Carbon::createFromFormat('Y-m-d', $filters['date_from'])->format('d M Y').' to '.Carbon::createFromFormat('Y-m-d', $filters['date_to'])->format('d M Y').'</b></center>'
+        ];
+
+        $exportdata[] = [
+            '<b>PROGRAM</b>',
+            '<b>APPROPRIATION</b>',
+            '<b>ALLOTMENT</b>',
+            '<b>OBLIGATION <br> INCURRED</b>',
+            '<b>UNOBLIGATED <br> BALANCE</b>',
         ];
 
         foreach($office_groups as $office_group) {
@@ -121,11 +133,11 @@ class ExpensesSummaryExport implements FromView, WithEvents
                     }
 
                     $exportdata[] = [
-                        '<b>Sub-total</b>',
-                        format_amount($d_total_appropriation),
-                        format_amount($d_total_allotment_total),
-                        format_amount($d_total_expenses_total),
-                        format_amount($d_total_balance_total),
+                        '<b>'.$officebydescription->description.' Sub-total</b>',
+                        '<b>'.format_amount($d_total_appropriation).'</b>',
+                        '<b>'.format_amount($d_total_allotment_total).'</b>',
+                        '<b>'.format_amount($d_total_expenses_total).'</b>',
+                        '<b>'.format_amount($d_total_balance_total).'</b>',
                     ];
                     $row_counter++;
 
@@ -133,11 +145,11 @@ class ExpensesSummaryExport implements FromView, WithEvents
 
 
                 $exportdata[] = [
-                    '<b>Sub-total</b>',
-                    format_amount($total_appropriation),
-                    format_amount($total_allotment_total),
-                    format_amount($total_expenses_total),
-                    format_amount($total_balance_total),
+                    '<b>'.$office->name.' Sub-total</b>',
+                    '<b>'.format_amount($total_appropriation).'</b>',
+                    '<b>'.format_amount($total_allotment_total).'</b>',
+                    '<b>'.format_amount($total_expenses_total).'</b>',
+                    '<b>'.format_amount($total_balance_total).'</b>',
                 ];
                 $row_counter++;
 
@@ -157,21 +169,24 @@ class ExpensesSummaryExport implements FromView, WithEvents
 
         $exportdata[] = [
             '<b>Grand total</b>',
-            format_amount($overall_total_appropriation),
-            format_amount($overall_total_allotment_total),
-            format_amount($overall_total_expenses_total),
-            format_amount($overall_total_balance_total),
+            '<b>'.format_amount($overall_total_appropriation).'</b>',
+            '<b>'.format_amount($overall_total_allotment_total).'</b>',
+            '<b>'.format_amount($overall_total_expenses_total).'</b>',
+            '<b>'.format_amount($overall_total_balance_total).'</b>',
         ];
         $row_counter++;
+
         $this->bordered_cells[] = 'A'.($row_counter+1).':E'.($row_counter+1);
 
         $this->exportdata = $exportdata;
 
-        for ($i=1; $i < $row_counter+1; $i++) { 
+        for ($i=2; $i <= $row_counter+1; $i++) { 
             foreach(range('A', 'E') as $letter) {
                 $this->bordered_left_right[] = $letter.($i);
             }
         }
+
+        $this->bordered_cells[] = 'A'.($row_counter+2).':E'.($row_counter+2);
 
     }
 
@@ -196,6 +211,10 @@ class ExpensesSummaryExport implements FromView, WithEvents
                 $event->sheet->columnWidth('C', 15);
                 $event->sheet->columnWidth('D', 15);
                 $event->sheet->columnWidth('E', 15);
+                $event->sheet->rowHeight('1', 100);
+                $event->sheet->verticalAlign('A1', 'top');
+                $event->sheet->horizontalAlign('A1', 'center');
+                $event->sheet->horizontalAlign('A2:E2', 'center');
                 foreach($this->bordered_cells as $cell) {
                      $event->sheet->getStyle($cell)->applyFromArray([
                         'borders' => [

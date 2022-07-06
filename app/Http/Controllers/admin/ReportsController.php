@@ -37,7 +37,7 @@ class ReportsController extends Controller
 
     public function export(Request $request) 
     {
-        return Excel::download(new ExpensesSummaryExport($request->all()), 'invoices.xlsx');
+        return Excel::download(new ExpensesSummaryExport($request->all()), 'reports.xlsx');
     }
     
     
