@@ -49,6 +49,7 @@ class AllotmentController extends Controller
     {
         $offices = Office::all();
         $categories = OfficeCategory::where('parent_id', 0)->get();
+        
         return view('dashboard.allotments.create',['offices' => $offices, 'categories' => $categories]);
     }
 
