@@ -36,6 +36,16 @@ class Office extends Model
                 ->sum('amount');
     }
 
+    public function getAllotmentTotalByYear($year)
+    {
+        return Transaction::with('reference')->where('type', 'allotment')
+                ->whereHas('reference', function($q){
+                    $q->where('month', '<>', 0);
+                })
+                ->where('recepient', $this->id)
+                ->sum('amount');
+    }
+
     public function getExpensesTotal($start ='', $end='')
     {
         return Transaction::where('type', 'expense')

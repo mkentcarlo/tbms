@@ -464,7 +464,9 @@ class OfficesController extends Controller
         $year = $_GET['year'];
         echo "<option value='0'>Select expense class</option>";
         foreach($expense_classes as $expense_class){
-            $appropriation_balance = $expense_class->getAppropriation( $year );
+            $appropriation = $expense_class->getAppropriation( $year );
+            $allotment_total = $expense_class->getAllotmentTotalByYear($year);
+            $appropriation_balance = $appropriation - $allotment_total;
             echo "<option data-balance='$appropriation_balance' value='{$expense_class->id}'>{$expense_class->name}</option>";
         }
     }
