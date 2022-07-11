@@ -468,6 +468,7 @@ class OfficesController extends Controller
                 $appropriation = $expense_class->getAppropriation( $year );
                 $allotment_total = $expense_class->getAllotmentTotalByYear($year);
                 $appropriation_balance = $appropriation - $allotment_total;
+                echo "<option data-balance='$appropriation_balance' value='{$expense_class->id}'>{$expense_class->name}</option>";
             }else{
                 echo "<option value='{$expense_class->id}'>{$expense_class->name}</option>";
             }
