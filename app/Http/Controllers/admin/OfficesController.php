@@ -461,7 +461,7 @@ class OfficesController extends Controller
     public function load_expense_classes( $category_id )
     {
         $expense_classes = Office::where('office_category_id', $category_id)->get();
-        $year = isset($_GET['year']) ? $year : NULL;
+        $year = isset($_GET['year']) ? $_GET['year'] : NULL;
         echo "<option value='0'>Select expense class</option>";
         foreach($expense_classes as $expense_class){
             if($year){
