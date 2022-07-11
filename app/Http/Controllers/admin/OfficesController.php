@@ -461,13 +461,17 @@ class OfficesController extends Controller
     public function load_expense_classes( $category_id )
     {
         $expense_classes = Office::where('office_category_id', $category_id)->get();
-        $year = $_GET['year'];
+        $year = isset($_GET['year']) ? $year : NULL;
         echo "<option value='0'>Select expense class</option>";
         foreach($expense_classes as $expense_class){
-            $appropriation = $expense_class->getAppropriation( $year );
-            $allotment_total = $expense_class->getAllotmentTotalByYear($year);
-            $appropriation_balance = $appropriation - $allotment_total;
-            echo "<option data-balance='$appropriation_balance' value='{$expense_class->id}'>{$expense_class->name}</option>";
+            if($year){
+                $appropriation = $expense_class->getAppropriation( $year );
+                $allotment_total = $expense_class->getAllotmentTotalByYear($year);
+                $appropriation_balance = $appropriation - $allotment_total;
+            }else{
+                echo "<option value='{$expense_class->id}'>{$expense_class->name}</option>";
+            }
+            
         }
     }
 
