@@ -51,7 +51,7 @@ class ExpenseController extends Controller
                 $query = $q->orWhere('account_code', 'like', '%'.$s.'%');
             });
         }
-        $expenses = $query->orderBy('created_at', 'asc')->get();
+        $expenses = $query->orderBy('created_at', 'asc')->paginate(20);
 
         return view('dashboard.expenses.index',['expenses' => $expenses, 'offices' => $offices]);
     }

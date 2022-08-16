@@ -69,6 +69,7 @@
                             @endforeach
                         </tbody>
                       </table>
+                      {{ $expenses->links() }}
                     </div>
                 </div>
               </div>
