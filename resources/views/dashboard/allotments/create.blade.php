@@ -151,7 +151,7 @@
 
      $("#frmCreateAllotment").submit(function(e){
       var balance = parseInt($("#appropriation_balance").val());
-      if(balance < 0 && $('#year').val() == ''){
+      if(balance < 0 && $('#month').val() == ''){
         e.preventDefault();
         alert('Insufficient appropriation balance.');
       }
