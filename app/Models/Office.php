@@ -63,6 +63,10 @@ class Office extends Model
         return $this->where('description', $this->description)->where('office_category_id', $category_id)->get();
     }
 
+    public function getDescription(){
+        return $this->category->parent->name. " > ".$this->category->name." > ".$this->name;
+    }
+
 }
 
 

@@ -11,6 +11,23 @@
 |
 */
 
+//reset password
+// Route::get('changepassword', function() {
+//     $user = App\Models\User::where('name', 'admin')->first();
+//     $user->password = Hash::make('admin123');
+//     $user->save();
+  
+//     echo 'Password changed successfully.';
+// });
+
+Route::get('backup', function() {
+    $filename = "tbms_".strtotime(now()).".sql";
+    $command = "C:/xampp/mysql/bin/mysqldump --user=".env('DB_USERNAME')." --password=".env('DB_PASSWORD')." --host=".env('DB_HOST')." ".env('DB_DATABASE') . " > ".env('BACKUP_DIR').$filename;
+    exec($command);
+});
+
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
 Route::group(['middleware' => ['get.menu']], function () {
     
 
@@ -123,6 +140,8 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::get('allotments/delete/{id}',        'admin\AllotmentController@delete')->name('allotment.delete');
 
         Route::get('/', 'admin\DashboardController@index')->name('dashboard.index');
+        Route::post('/select_office', 'admin\DashboardController@selectOffice')->name('dashboard.select_office');
+        Route::post('/select_date', 'admin\DashboardController@selectDate')->name('dashboard.select_date');
 
         Route::get('expenses', 'admin\ExpenseController@index')->name('expense.index');
         Route::get('expenses/create',        'admin\ExpenseController@create')->name('expense.create');

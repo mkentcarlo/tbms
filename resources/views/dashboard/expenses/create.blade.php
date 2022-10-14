@@ -8,6 +8,7 @@
               <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
                 <div class="card">
                   <form class="form-horizontal" action="{{route('expense.store')}}" method="post" id="frmCreateExpense">
+                    <input type="hidden" name="redirect_to" value="expense.index" />
                   @csrf
                     <div class="card-header">
                       <h5><i class="fa fa-align-justify"></i>{{ __('Add new expense') }}</h5></div>

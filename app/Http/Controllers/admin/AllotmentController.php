@@ -33,11 +33,35 @@ class AllotmentController extends Controller
         $offices = Office::all();
         $query = Allotment::select('*');
         $office_id = $request->input('office_id');
+        $categories = OfficeCategory::where('parent_id', 0)->get();
+        $ooes = [];
+        $expense_classes = [];
+
+        
+        if(isset($_GET[ 'office_group' ]) && $_GET[ 'office_group' ] != ''){
+            $office_group = $_GET[ 'office_group' ];
+            $ooes = OfficeCategory::where('parent_id', $_GET[ 'office_group' ])->get();
+            $query = $query->whereHas('expense_class', function($que){
+                if( isset($_GET[ 'ooe' ]) && $_GET[ 'ooe' ]!='' ) {
+                    $que->where( 'office_category_id',  $_GET[ 'ooe' ]);
+                } else{
+                    $que->whereHas( 'category', function($q){
+                        $q->where( 'parent_id',  $_GET[ 'office_group' ]);
+                    } );
+                }
+               
+            });
+        }
+
+        if( isset($_GET[ 'ooe' ]) && $_GET[ 'ooe' ]!='' ) {
+            $expense_classes = Office::where('office_category_id', $_GET[ 'ooe' ])->get();
+        }
+        
         if($office_id!=''){
             $query = $query->where('office_id', $office_id);
         }
-        $allotments = $query->orderBy('id', 'asc')->get();
-        return view('dashboard.allotments.index',['allotments' => $allotments, 'offices' => $offices]);
+        $allotments = $query->orderBy('id', 'asc')->paginate(20);
+        return view('dashboard.allotments.index',['allotments' => $allotments, 'offices' => $offices, 'categories'  =>  $categories, 'ooes' =>  $ooes, 'expense_classes'    =>  $expense_classes]);
     }
 
     /**

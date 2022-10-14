@@ -11,14 +11,26 @@
                       <h5><i class="fa fa-align-justify"></i>{{ __('Allotments / Appropriations') }}</h5></div>
                     <div class="card-body">
                         <a href="{{route('allotment.create')}}" class="btn btn-primary"><i class="c-icon cil-plus float-left mr-2"></i> Create</a>
-                        <div class="float-right w-50 text-right mb-3">
+                        <div class="float-right w-100 text-right mb-3">
                           <form action="" method="GET" id="frmFilter">
-                          <select class="form-control d-inline-block" style="max-width: 300px" id="office_id" name="office_id">
-                            <option value="">Office</option>
-                            @foreach($offices as $office)
-                            <option value="{{$office->id}}" {{@$_GET['office_id'] == $office->id ? 'selected' : ''}}>{{$office->name}}</option>
-                            @endforeach
-                          </select>
+                            <select class="form-control d-inline-block" style="max-width: 300px" id="office_group" name="office_group">
+                              <option value="">Select Office Group</option>
+                              @foreach( $categories as $category )
+                                <option value="{{$category->id}}" {{@$_GET['office_group'] == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
+                              @endforeach
+                            </select>
+                            <select class="form-control d-inline-block" style="max-width: 300px" id="ooe" name="ooe">
+                              <option value="">Select Office</option>
+                              @foreach( $ooes as $ooe )
+                                <option value="{{$ooe->id}}" {{@$_GET['ooe'] == $ooe->id ? 'selected' : ''}}>{{$ooe->name}}</option>
+                              @endforeach
+                            </select>
+                            <select class="form-control d-inline-block" style="max-width: 300px" id="office_id" name="office_id">
+                              <option value="">Expense Class</option>
+                              @foreach($expense_classes as $office)
+                              <option value="{{$office->id}}" {{@$_GET['office_id'] == $office->id ? 'selected' : ''}}>{{$office->name}}</option>
+                              @endforeach
+                            </select>
                           </form>
                         </div>
                         <div class="clearfix"></div>
@@ -55,6 +67,7 @@
                           @endforeach
                         </tbody>
                       </table>
+                      {{ $allotments->appends(request()->input())->links() }}
                     </div>
                 </div>
               </div>
@@ -73,13 +86,13 @@
 <script src="{{ asset('js/datatable-bootstrap.js') }}"></script>
 <script>
   $(document).ready(function(){
-    $('#tableAllotment').DataTable();
+    // $('#tableAllotment').DataTable();
     $(document).on('click', '.delete', function(e){
       if(!confirm('Are you sure you want to delete this?')){
         e.preventDefault();
       }
     });
-    $("#office_id").change(function(){
+    $("#office_id, #office_group, #ooe").change(function(){
       $("#frmFilter").submit();
     });
   });

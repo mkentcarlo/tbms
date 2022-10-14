@@ -36,7 +36,7 @@ if(!function_exists('renderDropdown')){
         </div>
         <ul class="c-sidebar-nav">
             <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="">Dashboard</a>
+            <a class="c-sidebar-nav-link" href="{{url('/')}}">Dashboard</a>
             </li>
             <li class="c-sidebar-nav-dropdown">
                 <a class="c-sidebar-nav-dropdown-toggle" href="javascript:;">Manage Offices</a>
@@ -54,6 +54,9 @@ if(!function_exists('renderDropdown')){
             </li>
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link" href="{{route('reports.index')}}">Reports</a>
+            </li>
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{url('logout')}}">Logout</a>
             </li>
         <!-- @if(isset($appMenus['sidebar menu']))
             @foreach($appMenus['sidebar menu'] as $menuel)

@@ -137,7 +137,6 @@
 
     $("#office_id").change(function(){
       var balance = $(this).find(':selected').attr('data-balance');
-      console.log(balance);
       $("#initial_approriation_balance").val(balance);
       $("#appropriation_balance").val($("#initial_approriation_balance").val());
     });

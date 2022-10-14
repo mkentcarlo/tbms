@@ -116,7 +116,7 @@ class ExpenseController extends Controller
         $print_link = route('expense.print', ['id' => $expense->id]);
 
         $request->session()->flash('message', 'Successfully added expense. <a class="print" href="'.$print_link.'">Click here</a> to print.');
-        return redirect()->route('expense.index');
+        return redirect()->route($request->input('redirect_to'));
     }
 
     /**
