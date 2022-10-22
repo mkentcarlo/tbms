@@ -166,20 +166,20 @@ class ExpensesSummaryExport implements FromView, WithEvents
                 $overall_total_balance_total+=$total_balance_total;
                 $overall_total_expenses_total+=$total_expenses_total;
 
-                $og_total_allotment_total+=$total_allotment_total;
-                $og_total_expenses_total+=$total_expenses_total;
-                $og_total_balance_total+=$total_balance_total;
-                $og_total_appropriation+=$total_appropriation;
+                $og_allotment_total+=$total_allotment_total;
+                $og_expenses_total+=$total_expenses_total;
+                $og_balance_total+=$total_balance_total;
+                $og_appropriation+=$total_appropriation;
 
 
             }
 
             $exportdata[] = [
                 '<b>'.$office->name.' Sub-total</b>',
-                '<b>'.format_amount($og_total_appropriation).'</b>',
-                '<b>'.format_amount($og_total_allotment_total).'</b>',
-                '<b>'.format_amount($og_total_expenses_total).'</b>',
-                '<b>'.format_amount($og_total_balance_total).'</b>',
+                '<b>'.format_amount($og_appropriation).'</b>',
+                '<b>'.format_amount($og_allotment_total).'</b>',
+                '<b>'.format_amount($og_expenses_total).'</b>',
+                '<b>'.format_amount($og_balance_total).'</b>',
             ];
 
 
