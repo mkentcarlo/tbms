@@ -70,7 +70,7 @@ class ExpensesSummaryExport implements FromView, WithEvents
 
 
             $exportdata[] = [
-                '<br>'.$office_group->name."</b>",
+                '<br>'.$office_group->name.'</b>',
                 '',
                 '',
                 '',
