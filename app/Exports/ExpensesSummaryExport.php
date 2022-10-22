@@ -63,6 +63,12 @@ class ExpensesSummaryExport implements FromView, WithEvents
 
         foreach($office_groups as $office_group) {
 
+            $og_allotment_total = 0;
+            $og_expenses_total = 0;
+            $og_balance_total = 0;
+            $og_appropriation = 0;
+
+
             $exportdata[] = [
                 $office_group->name,
                 '',
@@ -160,8 +166,21 @@ class ExpensesSummaryExport implements FromView, WithEvents
                 $overall_total_balance_total+=$total_balance_total;
                 $overall_total_expenses_total+=$total_expenses_total;
 
+                $og_total_allotment_total+=$total_allotment_total;
+                $og_total_expenses_total+=$total_expenses_total;
+                $og_total_balance_total+=$total_balance_total;
+                $og_total_appropriation+=$total_appropriation;
+
 
             }
+
+            $exportdata[] = [
+                '<b>'.$office->name.' Sub-total</b>',
+                '<b>'.format_amount($og_total_appropriation).'</b>',
+                '<b>'.format_amount($og_total_allotment_total).'</b>',
+                '<b>'.format_amount($og_total_expenses_total).'</b>',
+                '<b>'.format_amount($og_total_balance_total).'</b>',
+            ];
 
 
 
