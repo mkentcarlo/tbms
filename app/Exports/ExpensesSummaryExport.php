@@ -70,7 +70,7 @@ class ExpensesSummaryExport implements FromView, WithEvents
 
 
             $exportdata[] = [
-                $office_group->name,
+                '<br>'.$office_group->name."</b>",
                 '',
                 '',
                 '',
@@ -86,7 +86,7 @@ class ExpensesSummaryExport implements FromView, WithEvents
                 $total_appropriation = 0;
 
                 $exportdata[] = [
-                    $office->name,
+                    '<b>'.$office->name.'</b>',
                     '',
                     '',
                     '',
@@ -102,7 +102,7 @@ class ExpensesSummaryExport implements FromView, WithEvents
                     $d_total_appropriation = 0;
 
                     $exportdata[] = [
-                        $officebydescription->description,
+                        '<b>'.$officebydescription->description.'</b>',
                         '',
                         '',
                         '',
@@ -175,7 +175,7 @@ class ExpensesSummaryExport implements FromView, WithEvents
             }
 
             $exportdata[] = [
-                '<b>'.$office_group->name.' Sub-total</b>',
+                '<b>'.$office_group->name.' Total</b>',
                 '<b>'.format_amount($og_appropriation).'</b>',
                 '<b>'.format_amount($og_allotment_total).'</b>',
                 '<b>'.format_amount($og_expenses_total).'</b>',
