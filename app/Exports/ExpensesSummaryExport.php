@@ -175,12 +175,13 @@ class ExpensesSummaryExport implements FromView, WithEvents
             }
 
             $exportdata[] = [
-                '<b>'.$office->name.' Sub-total</b>',
+                '<b>'.$office_group->name.' Sub-total</b>',
                 '<b>'.format_amount($og_appropriation).'</b>',
                 '<b>'.format_amount($og_allotment_total).'</b>',
                 '<b>'.format_amount($og_expenses_total).'</b>',
                 '<b>'.format_amount($og_balance_total).'</b>',
             ];
+            $row_counter++;
 
 
 
