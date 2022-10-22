@@ -143,7 +143,6 @@
 
     $('#amount').on('keyup',function(e){
        var amount = $(this).val();
-       console.log(amount);
        var init_balance =  $("#initial_approriation_balance").val();
         $("#appropriation_balance").val(init_balance - amount);
      });

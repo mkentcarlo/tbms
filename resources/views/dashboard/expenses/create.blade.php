@@ -157,9 +157,9 @@
         url : "{{route('expense.get_office_allotment_balance')}}?office_id=" + office_id + "&month=" + month + "&year=" + year,
         method: "GET",
         success: function(data){
-          $("#office_allotment_balance").val(data.total_allotment_balance);
-          $("#total_allotment_quarter").val(data.total_allotment_quarter);
-          $("#total_expenses").val(data.total_expenses);
+          $("#office_allotment_balance").val(data.total_allotment_balance.toFixed(2));
+          $("#total_allotment_quarter").val(data.total_allotment_quarter.toFixed(2));
+          $("#total_expenses").val(data.total_expenses.toFixed(2));
           $("#amount").attr('max', data);
         }
       })
