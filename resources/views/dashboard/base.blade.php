@@ -112,7 +112,7 @@
       $(document).ready(function(){
         $('#office_id').select2({
           "theme" : 'bootstrap',
-          placeholder: "Select office"
+          "placeholder": "Select expense"
         });
       })
     </script>
