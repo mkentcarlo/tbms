@@ -71,7 +71,12 @@
                                     $overall_total_expenses_total = 0;
                                     $overall_total_balance_total = 0;
                                     $overall_total_appropriation = 0;
-                                    foreach($office_groups as $office_group): ?>
+                                    foreach($office_groups as $office_group): 
+                                        $og_total_allotment_total = 0;
+                                        $og_total_expenses_total = 0;
+                                        $og_total_balance_total = 0;
+                                        $og_total_appropriation = 0;
+                                    ?>
                                         <tr>
                                             <th class="pl-1"><?php echo $office_group->name; ?></th>
                                             <th></th>
@@ -152,7 +157,19 @@
                                         $overall_total_appropriation+=$total_appropriation;
                                         $overall_total_balance_total+=$total_balance_total;
                                         $overall_total_expenses_total+=$total_expenses_total;
+
+                                        $og_total_allotment_total+=$total_allotment_total;
+                                        $og_total_appropriation+=$total_appropriation;
+                                        $og_total_balance_total+=$total_balance_total;
+                                        $og_total_expenses_total+=$total_expenses_total;
                                     endforeach; ?>
+                                    <tr>
+                                        <th><b>{{$office_group->name}} Total</b></th>
+                                        <th>{{format_amount($og_total_appropriation)}}</th>
+                                        <th>{{format_amount($og_total_allotment_total)}}</th>
+                                        <th>{{format_amount($og_total_expenses_total)}}</th>
+                                        <th>{{format_amount($og_total_balance_total)}}</th>
+                                    </tr>
                                     <?php endforeach; ?>
                                     <tr>
                                         <th><b>Grand Total</b></th>
