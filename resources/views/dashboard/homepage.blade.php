@@ -39,8 +39,8 @@
                           </tr>
                         </thead>
                         <tbody>
-                          @foreach($transactions as $k => $transaction)
-                            @if(!$transaction->reference || $k > 0)
+                          @foreach($transactions as $transaction)
+                            @if(!$transaction->reference)
                               @continue
                             @endif  
                             @if($transaction->type == 'expense')
@@ -55,7 +55,7 @@
                             @else
                             <tr class="text-success">
                               <td>{{$transaction->id}}</td>
-                              <td>{{$transaction->reference->office->name}}</td>
+                              <td>{{@$transaction->reference->office->name}}</td>
                               <td>{{number_format($transaction->amount, 2)}}</td>
                               <td>{{number_format($transaction->ending_balance, 2)}}</td>
                               <td>{{$transaction->transaction_date}}</td>
