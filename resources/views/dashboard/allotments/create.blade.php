@@ -44,7 +44,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="office_id">Office group</label>
                         <div class="col-md-9">
-                        <select name="office_category_id" id="category" class="form-control">
+                        <select name="office_category_id" id="category" class="form-control" required>
                           <option value="">-----------</option>
                           @foreach($categories as $category)
                           <option value="{{$category->id}}">{{$category->name}}</option>
@@ -56,7 +56,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="office_id">Office</label>
                         <div class="col-md-9">
-                        <select name="object_of_expenditures" id="object_of_expenditures" class="form-control">
+                        <select name="object_of_expenditures" id="object_of_expenditures" class="form-control" required>
                         </select>  
                         <span class="help-block">Please select office</span>
                         </div>
@@ -64,7 +64,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="office_id">Expense Class</label>
                         <div class="col-md-9">
-                        <select name="office_id" id="office_id" class="form-control">
+                        <select name="office_id" id="office_id" class="form-control" required>
                         </select>  
                         <span class="help-block">Please select office</span>
                         </div>
