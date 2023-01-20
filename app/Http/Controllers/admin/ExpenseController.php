@@ -33,6 +33,7 @@ class ExpenseController extends Controller
         $offices = Office::all();
         $query = Expense::select('*');
         $office_id = $request->input('office_id');
+        $categories = OfficeCategory::where('parent_id', 0)->get();
         $m = $request->input('m');
         $y = $request->input('y');
         $s = $request->input('s');
@@ -53,7 +54,7 @@ class ExpenseController extends Controller
         }
         $expenses = $query->orderBy('created_at', 'asc')->paginate(20);
 
-        return view('dashboard.expenses.index',['expenses' => $expenses, 'offices' => $offices]);
+        return view('dashboard.expenses.index',['expenses' => $expenses, 'offices' => $offices, 'categories' => $categories]);
     }
 
     /**

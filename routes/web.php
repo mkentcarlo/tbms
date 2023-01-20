@@ -28,6 +28,7 @@ Route::get('backup', function() {
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
+
 Route::group(['middleware' => ['get.menu']], function () {
     
 
