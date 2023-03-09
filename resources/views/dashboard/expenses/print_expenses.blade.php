@@ -29,7 +29,7 @@
                 <strong>Municipality of Talacogon</strong>
             </div>
             <div class="content">
-              
+            <p><b>{{$expenses[0]->office->getDescription()}}</b></p>
             <table class="table table-responsive-sm table-striped">
                 <thead>
                   <tr>

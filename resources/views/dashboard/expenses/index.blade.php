@@ -14,7 +14,7 @@
                         <div class="float-left w-20">
                           
                         <a href="{{route('expense.create')}}" class="btn btn-primary btn-sm mb-2"><i class="c-icon cil-plus float-left mr-2"></i> New Expense</a> 
-                        <a href="{{route('expense.print_expenses').$print_params}}" class="btn btn-success btn-sm mb-2"><i class="c-icon cil-print float-left mr-2"></i> Print results</a>
+                        <a href="{{route('expense.print_expenses').$print_params}}" class="btn btn-success btn-sm mb-2" target="_blank"><i class="c-icon cil-print float-left mr-2"></i> Print results</a>
                         <input type="text" class="form-control d-inline-block" style="max-width: 300px" placeholder="Search by account code / budget" value="{{@$_GET['s']}}" name="s" />
                         </div>
                         <div class="float-right w-80 text-right mb-3">

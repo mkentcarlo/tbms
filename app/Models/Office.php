@@ -39,8 +39,9 @@ class Office extends Model
     public function getAllotmentTotalByYear($year)
     {
         return Transaction::with('reference')->where('type', 'allotment')
-                ->whereHas('reference', function($q){
+                ->whereHas('reference', function($q) use($year){
                     $q->where('month', '<>', 0);
+                    $q->where('year', $year);
                 })
                 ->where('recepient', $this->id)
                 ->sum('amount');
