@@ -147,7 +147,7 @@
                     <div class="col-half">
                         <p>CERTIFIED CORRECT:</p>
                         <p><strong>MARILOU P. AZUCENA,MM</strong><br>
-                        Budgeting Assistant</p>
+                        Budgeting Assistant III</p>
                     </div>
                     <div class="clearfix">
                         <p class="text-center">

@@ -54,7 +54,43 @@ class ExpenseController extends Controller
         }
         $expenses = $query->orderBy('created_at', 'asc')->paginate(20);
 
-        return view('dashboard.expenses.index',['expenses' => $expenses, 'offices' => $offices, 'categories' => $categories]);
+        $print_params = str_replace($request->url(), '',$request->fullUrl());
+
+        return view('dashboard.expenses.index',['expenses' => $expenses, 'offices' => $offices, 'categories' => $categories, 'print_params' => $print_params]);
+    }
+
+    /**
+     * Show the offices list.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function print_expenses(Request $request)
+    {
+        $offices = Office::all();
+        $query = Expense::select('*');
+        $office_id = $request->input('office_id');
+        $categories = OfficeCategory::where('parent_id', 0)->get();
+        $m = $request->input('m');
+        $y = $request->input('y');
+        $s = $request->input('s');
+        if($office_id!=''){
+            $query = $query->where('office_id', $request->input('office_id'));
+        }
+        if($m!=''){
+            $query = $query->where('month', $m);
+        }
+        if($y!=''){
+            $query = $query->where('year', $y);
+        }
+        if($s){
+            $query->where(function($q) use($s){
+                $query = $q->where('expense_class', 'like', '%'.$s.'%');
+                $query = $q->orWhere('account_code', 'like', '%'.$s.'%');
+            });
+        }
+        $expenses = $query->orderBy('created_at', 'asc')->paginate(20);
+
+        return view('dashboard.expenses.print_expenses',['expenses' => $expenses, 'offices' => $offices, 'categories' => $categories]);
     }
 
     /**

@@ -146,6 +146,7 @@ Route::group(['middleware' => ['get.menu']], function () {
 
         Route::get('expenses', 'admin\ExpenseController@index')->name('expense.index');
         Route::get('expenses/create',        'admin\ExpenseController@create')->name('expense.create');
+        Route::get('expenses/print_expenses',        'admin\ExpenseController@print_expenses')->name('expense.print_expenses');
         Route::post('expenses/store',        'admin\ExpenseController@store')->name('expense.store');
         Route::get('expenses/edit/{id}',        'admin\ExpenseController@edit')->name('expense.edit');
         Route::get('expenses/delete/{id}',        'admin\ExpenseController@delete')->name('expense.delete');
