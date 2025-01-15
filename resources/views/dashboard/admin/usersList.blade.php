@@ -5,18 +5,17 @@
         <div class="container-fluid">
           <div class="animated fadeIn">
             <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
+              <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                       <i class="fa fa-align-justify"></i>{{ __('Users') }}</div>
                     <div class="card-body">
-                        <table class="table table-responsive-sm table-striped">
+                        <a href="{{route('users.create')}}" class="btn btn-primary"><i class="c-icon cil-plus float-left mr-2"></i> Create</a>
+                        <table class="table table-responsive-sm table-striped mt-2">
                         <thead>
                           <tr>
-                            <th>Username</th>
+                            <th>Name</th>
                             <th>E-mail</th>
-                            <th>Roles</th>
-                            <th>Email verified at</th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -27,8 +26,6 @@
                             <tr>
                               <td>{{ $user->name }}</td>
                               <td>{{ $user->email }}</td>
-                              <td>{{ $user->menuroles }}</td>
-                              <td>{{ $user->email_verified_at }}</td>
                               <td>
                                 <a href="{{ url('/users/' . $user->id) }}" class="btn btn-block btn-primary">View</a>
                               </td>

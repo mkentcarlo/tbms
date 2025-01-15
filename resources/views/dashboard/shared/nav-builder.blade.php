@@ -53,38 +53,14 @@ if(!function_exists('renderDropdown')){
                 <a class="c-sidebar-nav-link" href="{{route('expense.index')}}">Manage Expenses</a>
             </li>
             <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{route('users.index')}}">Manage Users</a>
+            </li>
+            <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link" href="{{route('reports.index')}}">Reports</a>
             </li>
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link" href="{{url('logout')}}">Logout</a>
             </li>
-        <!-- @if(isset($appMenus['sidebar menu']))
-            @foreach($appMenus['sidebar menu'] as $menuel)
-                @if($menuel['slug'] === 'link')
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link" href="{{ url($menuel['href']) }}">
-                        @if($menuel['hasIcon'] === true)
-                            @if($menuel['iconType'] === 'coreui')
-                                <i class="{{ $menuel['icon'] }} c-sidebar-nav-icon"></i>
-                            @endif
-                        @endif 
-                        {{ $menuel['name'] }}
-                        </a>
-                    </li>
-                @elseif($menuel['slug'] === 'dropdown')
-                    <?php renderDropdown($menuel) ?>
-                @elseif($menuel['slug'] === 'title')
-                    <li class="c-sidebar-nav-title">
-                        @if($menuel['hasIcon'] === true)
-                            @if($menuel['iconType'] === 'coreui')
-                                <i class="{{ $menuel['icon'] }} c-sidebar-nav-icon"></i>
-                            @endif
-                        @endif 
-                        {{ $menuel['name'] }}
-                    </li>
-                @endif
-            @endforeach
-        @endif -->
         </ul>
         <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
     </div>

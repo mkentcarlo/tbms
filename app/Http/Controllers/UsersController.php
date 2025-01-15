@@ -56,6 +56,16 @@ class UsersController extends Controller
     }
 
     /**
+     * Show the form for creating user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('dashboard.admin.userCreateForm');
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -73,6 +83,34 @@ class UsersController extends Controller
         $user->email      = $request->input('email');
         $user->save();
         $request->session()->flash('message', 'Successfully updated user');
+        return redirect()->route('users.index');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name'       => 'required|min:1|max:256',
+            'email'      => 'required|email|max:256|unique:users',
+            'password'      => 'required|min:6|max:20',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password)
+        ]);
+
+        $user->assignRole('admin');
+        $user->assignRole('user');
+        
+        $request->session()->flash('message', 'Successfully created user');
         return redirect()->route('users.index');
     }
 

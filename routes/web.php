@@ -93,7 +93,7 @@ Route::group(['middleware' => ['get.menu']], function () {
 
     Route::group(['middleware' => ['role:admin']], function () {
         Route::resource('bread',  'BreadController');   //create BREAD (resource)
-        Route::resource('users',   'UsersController')->except( ['create', 'store'] );
+        Route::resource('users',   'UsersController');
 
         Route::get('offices',        'admin\OfficesController@index')->name('office.index');
         Route::post('offices/store',        'admin\OfficesController@store')->name('office.store');

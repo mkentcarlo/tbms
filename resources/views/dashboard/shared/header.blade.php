@@ -9,7 +9,7 @@
             if(isset($appMenus['top menu'])){
                 FreelyPositionedMenus::render( $appMenus['top menu'] , 'c-header-', 'd-md-down-none');
             }
-        ?>  j
+        ?>
         <ul class="c-header-nav ml-auto mr-4">
          
        
@@ -19,11 +19,11 @@
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <?php $segments = ''; ?>
             @for($i = 1; $i <= count(Request::segments()); $i++)
-                <?php $segments .= '/'. Request::segment($i); ?>
+                <?php $segments .= '/'. ucfirst(Request::segment($i)); ?>
                 @if($i < count(Request::segments()))
-                    <li class="breadcrumb-item">{{ Request::segment($i) }}</li>
+                    <li class="breadcrumb-item">{{ ucfirst(Request::segment($i)) }}</li>
                 @else
-                    <li class="breadcrumb-item active">{{ Request::segment($i) }}</li>
+                    <li class="breadcrumb-item active">{{ ucfirst(Request::segment($i)) }}</li>
                 @endif
             @endfor
           </ol>

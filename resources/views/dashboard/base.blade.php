@@ -94,6 +94,21 @@
         </div>
         @endif
 
+        {{-- Display Validation Errors --}}
+        @if ($errors->any())
+        <div class="row">
+          <div class="col-md-12 pl-5 pr-5">
+              <div class="alert alert-danger">
+                  <ul class="p-1 m-0">
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+              </div>
+          </div>
+        </div>
+        @endif
+
           @yield('content') 
 
         </main>
