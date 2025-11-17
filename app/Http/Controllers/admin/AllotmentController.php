@@ -142,12 +142,13 @@ class AllotmentController extends Controller
             'amount'       => 'required',
         ]);
 
-        $allotment = Allotment::find($id);
+	$allotment = Allotment::find($id);
         $allotment->year = $request->input('year');
         $allotment->month = !$request->input('month') ? 0: $request->input('month');
         $allotment->office_id = $request->input('office_id');
         $allotment->amount = $request->input('amount');
         $allotment->remarks = $request->input('remarks');
+
         $allotment->save();
 
         $transaction = Transaction::find($allotment->transaction->id);

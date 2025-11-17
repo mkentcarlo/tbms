@@ -51,6 +51,6 @@ class Allotment extends Model
 
     public function transaction()
     {
-        return $this->hasOne('App\Models\Transaction', 'reference_id');
+        return $this->hasOne('App\Models\Transaction', 'reference_id')->where('type','allotment');
     }
 }
