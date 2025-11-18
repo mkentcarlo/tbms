@@ -143,6 +143,10 @@
                             _____________________________ <br>
                             Chief of Office
                         </p>
+                        <p>
+                            {{$expense->payee}}<br>
+                            Payee
+                        </p>
                     </div>
                     <div class="col-half">
                         <p>CERTIFIED CORRECT:</p>
