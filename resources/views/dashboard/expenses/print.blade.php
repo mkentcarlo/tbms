@@ -4,7 +4,7 @@
         <style>
             @media print {
             @page { margin: 0; }
-            body { margin: 1.6cm; }
+            body { margin: 1.2cm; }
             .print-bar {
                 display: none;
             }
