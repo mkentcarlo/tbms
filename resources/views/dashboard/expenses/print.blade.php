@@ -19,6 +19,7 @@
             }
             .head{
                 text-align: center;
+                margin-bottom: -20px;
             }
             .date {
                 text-align: right
