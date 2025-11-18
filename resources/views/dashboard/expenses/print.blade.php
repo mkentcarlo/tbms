@@ -231,7 +231,7 @@
                             Chief of Office
                         </p>
                         <p>
-                            <b>{{$expense->remarks}}<b><br>
+                            <b>{{$expense->remarks}}</b><br>
                             Payee
                         </p>
                     </div>
