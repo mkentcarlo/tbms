@@ -158,7 +158,7 @@
                         <p class="text-center">
                             <br>
                             <strong>GWENDOLYN &nbsp;A.&nbsp; CLAROS, REB,MEM</strong> <br>
-                            Municipal Budget Officer
+                            Municipal Budget Officer<br><br>
                         </p>
                     </div>
                 </div>
