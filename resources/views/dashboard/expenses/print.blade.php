@@ -90,6 +90,10 @@
             <div class="content">
                 <table class="table office">
                     <tr>
+                        <td>PAYEE:</td>
+                        <td>{{$expense->remarks}}</td>
+                    </tr>
+                    <tr>
                         <td>OFFICE:</td>
                         <td>{{$expense->office->category->parent->name.' - '.$expense->office->category->name}}</td>
                     </tr>
@@ -143,10 +147,6 @@
                         <p>
                             _____________________________ <br>
                             Chief of Office
-                        </p>
-                        <p>
-                            <b>{{$expense->remarks}}</b><br>
-                            Payee
                         </p>
                     </div>
                     <div class="col-half">
@@ -177,6 +177,10 @@
             <div class="content">
                 <table class="table office">
                     <tr>
+                        <td>PAYEE:</td>
+                        <td>{{$expense->remarks}}</td>
+                    </tr>
+                    <tr>
                         <td>OFFICE:</td>
                         <td>{{$expense->office->category->parent->name.' - '.$expense->office->category->name}}</td>
                     </tr>
@@ -230,10 +234,6 @@
                         <p>
                             _____________________________ <br>
                             Chief of Office
-                        </p>
-                        <p>
-                            <b>{{$expense->remarks}}</b><br>
-                            Payee
                         </p>
                     </div>
                     <div class="col-half">
