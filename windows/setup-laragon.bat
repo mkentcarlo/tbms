@@ -3,6 +3,9 @@ echo ========================================
 echo TBMS Laragon Setup Script
 echo ========================================
 echo.
+echo NOTE: If symlink creation fails, the script will
+echo       copy files instead (slower but works without admin)
+echo.
 
 echo This script helps you set up TBMS with Laragon
 echo.
@@ -33,11 +36,26 @@ set TBMS_NAME=tbms
 
 echo Copying TBMS to Laragon www folder...
 if not exist "%LARAGON_PATH%\www\%TBMS_NAME%" (
-    echo Creating symlink...
+    echo Attempting to create symlink (requires admin privileges)...
     mklink /D "%LARAGON_PATH%\www\%TBMS_NAME%" "%TBMS_PATH%" >nul 2>&1
     if %ERRORLEVEL% neq 0 (
-        echo Symlink failed, copying files instead...
-        xcopy "%TBMS_PATH%\*" "%LARAGON_PATH%\www\%TBMS_NAME%\" /E /I /H /Y
+        echo Symlink requires administrator privileges.
+        echo Copying files instead (this may take a few minutes)...
+        echo.
+        xcopy "%TBMS_PATH%\*" "%LARAGON_PATH%\www\%TBMS_NAME%\" /E /I /H /Y /Q
+        if %ERRORLEVEL% equ 0 (
+            echo Files copied successfully!
+        ) else (
+            echo Copy failed. Please run this script as Administrator or copy manually.
+            echo.
+            echo Manual copy:
+            echo   1. Copy folder: %TBMS_PATH%
+            echo   2. To: %LARAGON_PATH%\www\%TBMS_NAME%
+            pause
+            exit /b 1
+        )
+    ) else (
+        echo Symlink created successfully!
     )
 ) else (
     echo TBMS already exists in Laragon www folder
