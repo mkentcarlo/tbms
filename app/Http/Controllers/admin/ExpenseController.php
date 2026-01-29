@@ -143,10 +143,10 @@ class ExpenseController extends Controller
         $transaction->type = 'expense';
         $transaction->recepient = $expense->office_id; 
         $transaction->amount = $expense->amount;
-        $transaction->ending_balance = $request->input('ending_balance');
-        $transaction->expense_total = $request->input('total_expenses');
-        $transaction->allotment_total_quarter = $request->input('total_allotment_quarter');
-        $transaction->allotment_available = $request->input('allotment_available');
+        $transaction->ending_balance = $request->input('ending_balance', 0);
+        $transaction->expense_total = $request->input('total_expenses', 0);
+        $transaction->allotment_total_quarter = $request->input('total_allotment_quarter', 0);
+        $transaction->allotment_available = $request->input('allotment_available', 0);
         $transaction->remarks = $expense->remarks;
         $transaction->transaction_date = $request->input('transaction_date');
         $transaction->save();

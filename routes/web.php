@@ -33,6 +33,10 @@ Route::group(['middleware' => ['get.menu']], function () {
     
 
     Route::group(['middleware' => ['role:user', 'auth']], function () {
+        // Modern UI Test Routes
+        Route::get('/modern-test', function () { return view('dashboard.modern-test'); })->name('modern.test');
+        Route::get('/phase2-demo', function () { return view('dashboard.phase2-demo'); })->name('phase2.demo');
+        
         Route::get('/colors', function () {     return view('dashboard.colors'); });
         Route::get('/typography', function () { return view('dashboard.typography'); });
         Route::get('/charts', function () {     return view('dashboard.charts'); });

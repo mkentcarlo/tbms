@@ -1,61 +1,101 @@
-@extends('dashboard.authBase')
+@extends('layouts.auth')
 
-@section('content')
+@section('title', 'Login')
 
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          <div class="card-group">
-            <div class="card p-4">
-              <div class="card-body">
-                <h1>Login</h1>
-                <p class="text-muted">Sign In to your account</p>
-                <form method="POST" action="{{ route('login') }}">
-                    @csrf
-                    <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <svg class="c-icon">
-                          <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-user"></use>
-                        </svg>
-                      </span>
-                    </div>
-                    <input class="form-control" type="text" placeholder="{{ __('E-Mail Address') }}" name="email" value="{{ old('email') }}" required autofocus>
-                    </div>
-                    <div class="input-group mb-4">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <svg class="c-icon">
-                          <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-lock-locked"></use>
-                        </svg>
-                      </span>
-                    </div>
-                    <input class="form-control" type="password" placeholder="{{ __('Password') }}" name="password" required>
-                    </div>
-                    <div class="row">
-                    <div class="col-6">
-                        <button class="btn btn-primary px-4" type="submit">{{ __('Login') }}</button>
-                    </div>
-                    </form>
-                    </div>
-              </div>
-            </div>
-            <div class="card text-white bg-dark py-5 d-md-down-none" style="width:44%">
-              <div class="card-body text-center">
-                <div>
-                  <img src="{{ asset('assets/brand/logo.png') }}" alt="" style="width: 100%; max-width: 220px;">
-                  <br>
-                  <h4>TALACOGON BUDGET MANAGEMENT SYSTEM</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+@section('header')
+    <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-900">Sign in to your account</h2>
+        <p class="mt-2 text-sm text-gray-600">
+            Or
+            @if (Route::has('register'))
+                <a href="{{ route('register') }}" class="font-medium text-primary-600 hover:text-primary-500">create a new account</a>
+            @endif
+        </p>
     </div>
-
 @endsection
 
-@section('javascript')
+@section('content')
+    <form method="POST" action="{{ route('login') }}" class="space-y-6">
+        @csrf
 
+        <!-- Email Address -->
+        <div>
+            <label for="email" class="form-label">Email address</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                </div>
+                <input 
+                    id="email" 
+                    type="email" 
+                    name="email" 
+                    value="{{ old('email') }}" 
+                    required 
+                    autofocus 
+                    autocomplete="email"
+                    class="form-input pl-10 @error('email') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror" 
+                    placeholder="you@example.com"
+                >
+            </div>
+            @error('email')
+                <p class="form-error">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <!-- Password -->
+        <div>
+            <label for="password" class="form-label">Password</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+                <input 
+                    id="password" 
+                    type="password" 
+                    name="password" 
+                    required 
+                    autocomplete="current-password"
+                    class="form-input pl-10 @error('password') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror" 
+                    placeholder="••••••••"
+                >
+            </div>
+            @error('password')
+                <p class="form-error">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <!-- Remember Me -->
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <input 
+                    id="remember" 
+                    name="remember" 
+                    type="checkbox" 
+                    class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                >
+                <label for="remember" class="ml-2 block text-sm text-gray-900">
+                    Remember me
+                </label>
+            </div>
+
+            @if (Route::has('password.request'))
+                <div class="text-sm">
+                    <a href="{{ route('password.request') }}" class="font-medium text-primary-600 hover:text-primary-500">
+                        Forgot your password?
+                    </a>
+                </div>
+            @endif
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+            <button type="submit" class="w-full btn-primary">
+                Sign in
+            </button>
+        </div>
+    </form>
 @endsection
