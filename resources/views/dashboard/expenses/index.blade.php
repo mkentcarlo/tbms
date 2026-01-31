@@ -119,79 +119,78 @@
 
         <!-- Expenses Table -->
         <div class="card">
-            <div class="card-body">
+            @if($expenses->count() > 0)
+                <!-- Top Pagination -->
+                <div class="px-4 py-3 border-b border-gray-200">
+                    {{ $expenses->appends(request()->input())->links('vendor.pagination.tailwind') }}
+                </div>
+            @endif
+            <div class="overflow-x-auto">
                 @if($expenses->count() > 0)
-                    <div class="table-container">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expense Class</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Account Code</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ending Balance</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction Date</th>
-                                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expense Class</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Account Code</th>
+                                <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ending Balance</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider sticky right-0 bg-gray-50 shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.1)]">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach($expenses as $expense)
+                                @php
+                                    $transaction = $expense->transaction();
+                                @endphp
+                                <tr class="hover:bg-gray-50 group">
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $expense->office ? $expense->office->getDescription() : 'N/A' }}
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $expense->account_code ?? 'N/A' }}
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 text-right">
+                                        ₱{{ $transaction ? number_format($transaction->amount, 2) : number_format($expense->amount ?? 0, 2) }}
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 text-right">
+                                        ₱{{ $transaction ? number_format($transaction->ending_balance, 2) : '0.00' }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-500 max-w-[150px] truncate" title="{{ $transaction->remarks ?? $expense->remarks ?? '' }}">
+                                        {{ $transaction && $transaction->remarks ? Str::limit($transaction->remarks, 30) : ($expense->remarks ? Str::limit($expense->remarks, 30) : '-') }}
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $transaction ? $transaction->transaction_date : ($expense->created_at ? $expense->created_at->format('Y-m-d') : '-') }}
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium sticky right-0 bg-white group-hover:bg-gray-50 shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.1)]">
+                                        <div class="flex items-center justify-end gap-1">
+                                            <a 
+                                                href="{{ route('expense.print', ['id' => $expense->id]) }}" 
+                                                target="_blank"
+                                                class="btn-secondary btn-sm inline-flex items-center gap-1 print-link">
+                                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                                </svg>
+                                                Print
+                                            </a>
+                                            <a 
+                                                href="{{ route('expense.delete', ['id' => $expense->id]) }}" 
+                                                class="btn-danger btn-sm inline-flex items-center gap-1 delete-link"
+                                                onclick="return confirm('Are you sure you want to delete this expense?');">
+                                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach($expenses as $expense)
-                                    @php
-                                        $transaction = $expense->transaction();
-                                    @endphp
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $expense->office ? $expense->office->getDescription() : 'N/A' }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $expense->account_code ?? 'N/A' }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            ₱{{ $transaction ? number_format($transaction->amount, 2) : number_format($expense->amount ?? 0, 2) }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            ₱{{ $transaction ? number_format($transaction->ending_balance, 2) : '0.00' }}
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-gray-500">
-                                            {{ $transaction && $transaction->remarks ? Str::limit($transaction->remarks, 50) : ($expense->remarks ? Str::limit($expense->remarks, 50) : '-') }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $transaction ? $transaction->transaction_date : ($expense->created_at ? $expense->created_at->format('Y-m-d') : '-') }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <div class="flex items-center justify-end gap-2">
-                                                <a 
-                                                    href="{{ route('expense.print', ['id' => $expense->id]) }}" 
-                                                    target="_blank"
-                                                    class="btn-secondary btn-sm inline-flex items-center gap-1 print-link">
-                                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                                                    </svg>
-                                                    Print
-                                                </a>
-                                                <a 
-                                                    href="{{ route('expense.delete', ['id' => $expense->id]) }}" 
-                                                    class="btn-danger btn-sm inline-flex items-center gap-1 delete-link"
-                                                    onclick="return confirm('Are you sure you want to delete this expense?');">
-                                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Pagination -->
-                    <div class="mt-4">
-                        {{ $expenses->appends(request()->input())->links() }}
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
                 @else
-                    <div class="text-center py-12">
+                    <div class="text-center py-12 px-4">
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
@@ -208,6 +207,12 @@
                     </div>
                 @endif
             </div>
+            @if($expenses->count() > 0)
+                <!-- Footer Pagination -->
+                <div class="card-footer bg-gray-50 border-t border-gray-200 px-4 py-3">
+                    {{ $expenses->appends(request()->input())->links('vendor.pagination.tailwind') }}
+                </div>
+            @endif
         </div>
     </div>
 @endsection
@@ -266,10 +271,6 @@
                     method: "GET",
                     success: function(data){
                         $("#office_id").html('<option value="">All Offices</option>' + data);
-                        $('#office_id').select2({
-                            "theme": 'bootstrap',
-                            placeholder: "Select expense class"
-                        });
                     }
                 });
             });

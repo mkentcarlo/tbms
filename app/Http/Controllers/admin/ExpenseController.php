@@ -150,6 +150,10 @@ class ExpenseController extends Controller
         $transaction->remarks = $expense->remarks;
         $transaction->transaction_date = $request->input('transaction_date');
         $transaction->save();
+
+        // Recalculate all ending balances for this office
+        Transaction::recalculateEndingBalances($expense->office_id, $expense->year);
+
         $print_link = route('expense.print', ['id' => $expense->id]);
 
         $request->session()->flash('message', 'Successfully added expense. <a class="print" href="'.$print_link.'">Click here</a> to print.');
@@ -183,6 +187,9 @@ class ExpenseController extends Controller
         ]);
 
         $expense = Expense::find($id);
+        $oldOfficeId = $expense->office_id;
+        $oldYear = $expense->year;
+        
         $expense->year = $request->input('year');
         $expense->month = $request->input('month');
         $expense->office_id = $request->input('office_id');
@@ -190,12 +197,21 @@ class ExpenseController extends Controller
         $expense->remarks = $request->input('remarks');
         $expense->save();
 
-        $transaction = Transaction::find($expense->transaction->id);
-        $transaction->recepient = $expense->office_id;
-        $transaction->amount = $expense->amount;
-        $transaction->ending_balance = $expense->monthly_allocation($expense->month, $expense->year);
-        $transaction->remarks = $expense->remarks;
-        $transaction->save();
+        $transaction = Transaction::where('reference_id', $expense->id)->where('type', 'expense')->first();
+        if ($transaction) {
+            $transaction->recepient = $expense->office_id;
+            $transaction->amount = $expense->amount;
+            $transaction->remarks = $expense->remarks;
+            $transaction->save();
+        }
+
+        // Recalculate ending balances for the new office/year
+        Transaction::recalculateEndingBalances($expense->office_id, $expense->year);
+        
+        // If office or year changed, also recalculate for the old office/year
+        if ($oldOfficeId != $expense->office_id || $oldYear != $expense->year) {
+            Transaction::recalculateEndingBalances($oldOfficeId, $oldYear);
+        }
 
         $request->session()->flash('message', 'Successfully updated expense.');
         return redirect()->route('expense.index');
@@ -210,13 +226,25 @@ class ExpenseController extends Controller
     public function delete($id, Request $request)
     {
         $expense = Expense::find($id);
+        
+        if (!$expense) {
+            $request->session()->flash('error', 'Expense not found.');
+            return redirect()->route('expense.index');
+        }
+
+        // Store office and year before deleting
+        $officeId = $expense->office_id;
+        $year = $expense->year;
 
         if($expense->transaction()){
             Transaction::where('reference_id', $id)->where('type', 'expense')->delete();
         }
-        if($expense){
-            $expense->delete();
-        }
+        
+        $expense->delete();
+
+        // Recalculate ending balances for this office after deletion
+        Transaction::recalculateEndingBalances($officeId, $year);
+
         $request->session()->flash('message', 'Successfully deleted expense.');
         return redirect()->route('expense.index');
     }
@@ -232,6 +260,34 @@ class ExpenseController extends Controller
             'total_expenses' => $total_expenses,
             'total_allotment_balance' => $total_allotment_balance
         ]);
+    }
+
+    /**
+     * Autocomplete search for account codes
+     */
+    public function autocomplete(Request $request)
+    {
+        $search = $request->input('q');
+        
+        if (strlen($search) < 1) {
+            return response()->json([]);
+        }
+
+        $results = Expense::select('account_code', 'expense_class')
+            ->where('account_code', 'like', '%' . $search . '%')
+            ->orWhere('expense_class', 'like', '%' . $search . '%')
+            ->groupBy('account_code', 'expense_class')
+            ->limit(10)
+            ->get()
+            ->map(function($expense) {
+                return [
+                    'account_code' => $expense->account_code,
+                    'expense_class' => $expense->expense_class,
+                    'label' => $expense->account_code . ' - ' . ($expense->expense_class ?? 'N/A')
+                ];
+            });
+
+        return response()->json($results);
     }
     
     

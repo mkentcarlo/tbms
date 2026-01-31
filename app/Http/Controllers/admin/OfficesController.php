@@ -37,7 +37,8 @@ class OfficesController extends Controller
      */
     public function expense_classes()
     {
-        return view('dashboard.offices.expense_classes',['expense_classes' => Office::all()]);
+        $expense_classes = Office::with(['category.parent'])->paginate(15);
+        return view('dashboard.offices.expense_classes', ['expense_classes' => $expense_classes]);
     }
 
     /**

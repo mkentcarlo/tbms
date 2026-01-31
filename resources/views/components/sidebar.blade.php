@@ -1,14 +1,22 @@
+@php
+    use App\Models\AppSetting;
+    $sidebarAppName = AppSetting::appName();
+    $sidebarAppLogo = AppSetting::appLogo();
+@endphp
 <!-- Desktop Sidebar -->
 <div class="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 lg:flex lg:w-64 lg:flex-col">
     <div class="flex flex-col flex-grow bg-white border-r border-gray-200 pt-5 pb-4 overflow-y-auto">
         <div class="flex items-center flex-shrink-0 px-4">
-            <h1 class="text-2xl font-bold text-primary-600">TBMS</h1>
+            @if($sidebarAppLogo)
+                <img src="{{ asset($sidebarAppLogo) }}" alt="{{ $sidebarAppName }}" class="h-8 w-auto mr-2">
+            @endif
+            <h1 class="text-2xl font-bold text-primary-600">{{ $sidebarAppName }}</h1>
         </div>
         <div class="mt-5 flex-grow flex flex-col">
             <nav class="flex-1 px-2 space-y-1" aria-label="Sidebar">
                 <!-- Dashboard -->
-                <a href="/" class="group flex items-center px-2 py-2 text-sm font-medium rounded-lg {{ request()->is('/') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-                    <svg class="mr-3 h-6 w-6 flex-shrink-0 {{ request()->is('/') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('dashboard.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-lg {{ request()->routeIs('dashboard.index') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <svg class="mr-3 h-6 w-6 flex-shrink-0 {{ request()->routeIs('dashboard.index') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     Dashboard
@@ -88,26 +96,67 @@
                 </a>
 
                 @auth
-                    @if(auth()->user()->hasRole('admin'))
+                    @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super_admin'))
                         <!-- Admin Section -->
                         <div class="pt-4 mt-4 border-t border-gray-200">
                             <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Administration</p>
                         </div>
 
-                        <!-- Users -->
+                        <!-- Users (admin and super_admin) -->
                         <a href="{{ route('users.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-lg {{ request()->is('users*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
                             <svg class="mr-3 h-6 w-6 flex-shrink-0 {{ request()->is('users*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
                             Users
                         </a>
+                    @endif
 
-                        <!-- Roles -->
+                    @if(auth()->user()->hasRole('super_admin'))
+                        <!-- Super Admin Only Section -->
+                        <div class="pt-4 mt-4 border-t border-gray-200">
+                            <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">System</p>
+                        </div>
+
+                        <!-- Settings (super_admin only) -->
+                        <a href="{{ route('settings.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-lg {{ request()->is('settings*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                            <svg class="mr-3 h-6 w-6 flex-shrink-0 {{ request()->is('settings*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Settings
+                        </a>
+
+                        <!-- Roles (super_admin only) -->
                         <a href="{{ route('roles.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-lg {{ request()->is('roles*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
                             <svg class="mr-3 h-6 w-6 flex-shrink-0 {{ request()->is('roles*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                             </svg>
                             Roles
+                        </a>
+
+                        <!-- Database Backups (super_admin only) -->
+                        <a href="{{ route('backup.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-lg {{ request()->is('backups*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                            <svg class="mr-3 h-6 w-6 flex-shrink-0 {{ request()->is('backups*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                            </svg>
+                            Backups
+                        </a>
+
+                        <!-- System Updates (super_admin only) -->
+                        @php
+                            $updateInfo = \Illuminate\Support\Facades\Cache::get('update_info', []);
+                            $hasUpdate = $updateInfo['update_available'] ?? false;
+                        @endphp
+                        <a href="{{ route('update.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-lg {{ request()->is('updates*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                            <svg class="mr-3 h-6 w-6 flex-shrink-0 {{ request()->is('updates*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Updates
+                            @if($hasUpdate)
+                                <span class="ml-auto inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    New
+                                </span>
+                            @endif
                         </a>
                     @endif
                 @endauth
@@ -128,7 +177,12 @@
      style="display: none;">
     <div class="flex flex-col h-full bg-white border-r border-gray-200 shadow-lg">
         <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200">
-            <h1 class="text-2xl font-bold text-primary-600">TBMS</h1>
+            <div class="flex items-center">
+                @if($sidebarAppLogo)
+                    <img src="{{ asset($sidebarAppLogo) }}" alt="{{ $sidebarAppName }}" class="h-8 w-auto mr-2">
+                @endif
+                <h1 class="text-2xl font-bold text-primary-600">{{ $sidebarAppName }}</h1>
+            </div>
             <button @click="sidebarOpen = false" class="text-gray-400 hover:text-gray-500">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -138,8 +192,8 @@
         <div class="flex-1 overflow-y-auto pt-5 pb-4">
             <nav class="flex-1 px-2 space-y-1" aria-label="Sidebar">
                 <!-- Dashboard -->
-                <a href="/" class="group flex items-center px-2 py-2 text-sm font-medium rounded-lg {{ request()->is('/') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-                    <svg class="mr-3 h-6 w-6 flex-shrink-0 {{ request()->is('/') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('dashboard.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-lg {{ request()->routeIs('dashboard.index') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <svg class="mr-3 h-6 w-6 flex-shrink-0 {{ request()->routeIs('dashboard.index') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     Dashboard

@@ -111,6 +111,9 @@ class AllotmentController extends Controller
         $transaction->allotment_available = 0;
         $transaction->save();
 
+        // Recalculate all ending balances for this office since allotment changed
+        Transaction::recalculateEndingBalances($allotment->office_id, $allotment->year);
+
         $request->session()->flash('message', 'Successfully created allotment.');
         return redirect()->route('allotment.index');
     }
@@ -142,7 +145,10 @@ class AllotmentController extends Controller
             'amount'       => 'required',
         ]);
 
-	$allotment = Allotment::find($id);
+        $allotment = Allotment::find($id);
+        $oldOfficeId = $allotment->office_id;
+        $oldYear = $allotment->year;
+        
         $allotment->year = $request->input('year');
         $allotment->month = !$request->input('month') ? 0: $request->input('month');
         $allotment->office_id = $request->input('office_id');
@@ -151,12 +157,21 @@ class AllotmentController extends Controller
 
         $allotment->save();
 
-        $transaction = Transaction::find($allotment->transaction->id);
-        $transaction->recepient = $allotment->office_id;
-        $transaction->amount = $allotment->amount;
-        $transaction->ending_balance = $allotment->monthly_allocation($allotment->office_id, $allotment->month, $allotment->year);
-        $transaction->remarks = $allotment->remarks;
-        $transaction->save();
+        $transaction = $allotment->transaction;
+        if ($transaction) {
+            $transaction->recepient = $allotment->office_id;
+            $transaction->amount = $allotment->amount;
+            $transaction->remarks = $allotment->remarks;
+            $transaction->save();
+        }
+
+        // Recalculate ending balances for the new office/year
+        Transaction::recalculateEndingBalances($allotment->office_id, $allotment->year);
+        
+        // If office or year changed, also recalculate for the old office/year
+        if ($oldOfficeId != $allotment->office_id || $oldYear != $allotment->year) {
+            Transaction::recalculateEndingBalances($oldOfficeId, $oldYear);
+        }
 
         $request->session()->flash('message', 'Successfully updated allotment.');
         return redirect()->route('allotment.index');
@@ -172,12 +187,24 @@ class AllotmentController extends Controller
     {
         $allotment = Allotment::find($id);
 
+        if (!$allotment) {
+            $request->session()->flash('error', 'Allotment not found.');
+            return redirect()->route('allotment.index');
+        }
+
+        // Store office and year before deleting
+        $officeId = $allotment->office_id;
+        $year = $allotment->year;
+
         if($allotment->transaction){
             $allotment->transaction->delete();
         }
-        if($allotment){
-            $allotment->delete();
-        }
+        
+        $allotment->delete();
+
+        // Recalculate ending balances for this office after deletion
+        Transaction::recalculateEndingBalances($officeId, $year);
+
         $request->session()->flash('message', 'Successfully deleted allotment.');
         return redirect()->route('allotment.index');
     }

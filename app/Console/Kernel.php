@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\DatabaseBackup::class,
+        Commands\CheckForUpdates::class,
     ];
 
     /**
@@ -24,8 +25,21 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        // Daily database backup at 4:00 PM
+        $schedule->command('backup:database --keep=7')
+                 ->dailyAt('16:00')
+                 ->appendOutputTo(storage_path('logs/backup.log'))
+                 ->onSuccess(function () {
+                     \Log::info('Scheduled backup completed successfully at ' . now());
+                 })
+                 ->onFailure(function () {
+                     \Log::error('Scheduled backup failed at ' . now());
+                 });
+
+        // Check for updates every hour
+        $schedule->command('update:check')
+                 ->hourly()
+                 ->appendOutputTo(storage_path('logs/update-check.log'));
     }
 
     /**

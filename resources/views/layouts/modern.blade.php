@@ -97,6 +97,9 @@
          style="display: none;">
     </div>
 
+    <!-- jQuery (for legacy scripts) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
     @yield('scripts')
 </body>
 </html>

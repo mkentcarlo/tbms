@@ -3,7 +3,6 @@
 @section('title', 'Dashboard')
 
 @section('breadcrumbs')
-    <li><a href="{{ route('dashboard.index') }}">Home</a></li>
     <li class="text-gray-500">Dashboard</li>
 @endsection
 
@@ -13,31 +12,33 @@
             <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
             <p class="mt-1 text-sm text-gray-500">Overview of your budget management system</p>
         </div>
-        <!-- Test button to verify modal works -->
-        <button 
-            data-modal-open="addExpenseModal"
-            class="btn-outline btn-sm">
-            Test Modal
-        </button>
     </div>
 @endsection
 
 @section('content')
     <div class="space-y-6">
-        <!-- Card with Filters and Quick Add -->
+        <!-- Filters and Quick Add Card -->
         <div class="card">
-            <div class="card-header">
+            <div class="px-4 py-4 border-b border-gray-200">
                 <div class="flex items-center justify-between flex-wrap gap-4">
                     <div class="flex items-center gap-3 flex-wrap">
                         <button 
                             data-modal-open="selectOfficeModal"
-                            class="btn-outline">
-                            Selected Office: <span class="badge-success ml-2">{{ $selected_office->getDescription() }}</span>
+                            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                            <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                            <span class="hidden sm:inline text-gray-500">Office:</span>
+                            <span class="font-medium text-gray-900">{{ $selected_office->getDescription() }}</span>
                         </button>
                         <button 
                             data-modal-open="selectDateModal"
-                            class="btn-outline">
-                            Selected Date: <span class="badge-success ml-2">{{ date('F', mktime(0, 0, 0, $month, 1)) . ' ' . $year }}</span>
+                            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                            <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span class="hidden sm:inline text-gray-500">Date:</span>
+                            <span class="font-medium text-gray-900">{{ date('F', mktime(0, 0, 0, $month, 1)) . ' ' . $year }}</span>
                         </button>
                     </div>
                     <div class="relative" x-data="{ open: false }">
@@ -45,10 +46,10 @@
                             @click="open = !open" 
                             type="button"
                             class="btn-primary inline-flex items-center gap-2">
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
-                            Quick add
+                            Quick Add
                             <svg 
                                 class="h-4 w-4 transition-transform duration-200" 
                                 :class="{ 'rotate-180': open }"
@@ -94,61 +95,66 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <h4 class="text-lg font-semibold text-gray-900 mb-4">Last 20 Transactions</h4>
-                <div class="table-container">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Account Code</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expense Class</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ending Balance</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse($transactions as $transaction)
-                                @if(!$transaction->reference)
-                                    @continue
-                                @endif
-                                @if($transaction->type == 'expense')
-                                    <tr class="hover:bg-red-50 text-red-600">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $transaction->reference->account_code }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $transaction->reference->office->getDescription() }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ number_format($transaction->amount, 2) }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ number_format($transaction->ending_balance, 2) }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $transaction->transaction_date }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                            <a href="{{ route('expense.print', ['id' => $transaction->reference->id]) }}" class="btn-secondary btn-sm inline-flex items-center gap-1">
-                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                                                </svg>
-                                                Print
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @else
-                                    <tr class="hover:bg-green-50 text-green-600">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $transaction->id }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $transaction->reference->office->name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ number_format($transaction->amount, 2) }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ number_format($transaction->ending_balance, 2) }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $transaction->transaction_date }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">-</td>
-                                    </tr>
-                                @endif
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="px-6 py-8 text-center text-sm text-gray-500">
-                                        No transactions found
+            
+            <!-- Recent Transactions -->
+            <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                <h4 class="text-sm font-semibold text-gray-700">Last 20 Transactions</h4>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Account Code</th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expense Class</th>
+                            <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                            <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ending Balance</th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse($transactions as $transaction)
+                            @if(!$transaction->reference)
+                                @continue
+                            @endif
+                            @if($transaction->type == 'expense')
+                                <tr class="hover:bg-red-50">
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-red-600 font-medium">{{ $transaction->reference->account_code }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-red-600">{{ $transaction->reference->office->getDescription() }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-red-600 font-medium text-right">{{ number_format($transaction->amount, 2) }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-red-600 font-medium text-right">{{ number_format($transaction->ending_balance, 2) }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-red-600">{{ $transaction->transaction_date }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-center text-sm">
+                                        <a href="{{ route('expense.print', ['id' => $transaction->reference->id]) }}" class="btn-secondary btn-sm inline-flex items-center gap-1">
+                                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                            </svg>
+                                            Print
+                                        </a>
                                     </td>
                                 </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                            @else
+                                <tr class="hover:bg-green-50">
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-green-600 font-medium">{{ $transaction->id }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-green-600">{{ $transaction->reference->office->name }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-green-600 font-medium text-right">{{ number_format($transaction->amount, 2) }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-green-600 font-medium text-right">{{ number_format($transaction->ending_balance, 2) }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-green-600">{{ $transaction->transaction_date }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-center text-sm text-gray-400">-</td>
+                                </tr>
+                            @endif
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    No transactions found
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -228,60 +234,48 @@
             <input type="hidden" class="form-input" name="transaction_date" id="transaction_date" value="{{ date('Y-m-d') }}" />
             @csrf
 
-            <div class="table-container">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr>
-                            <th colspan="2" class="px-4 py-3 text-left text-sm font-semibold text-gray-900 bg-gray-50">{{ $selected_office->getDescription() }}</th>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 text-sm text-gray-600">Month/Year</td>
-                            <th class="px-4 py-3 text-sm font-medium text-gray-900">{{ date('F', mktime(0, 0, 0, $month, 1)) . ' ' . $year }}</th>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 text-sm text-gray-600">ID</td>
-                            <th class="px-4 py-3 text-sm font-medium text-gray-900">
-                                <input type="text" name="expense_id" class="form-input" value="{{ $expense_id }}" />
-                            </th>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 text-sm text-gray-600">Account Code</td>
-                            <th class="px-4 py-3 text-sm font-medium text-gray-900">
-                                <input type="text" name="account_code" class="form-input" />
-                            </th>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 text-sm text-gray-600">Amount</td>
-                            <th class="px-4 py-3 text-sm font-medium text-gray-900">
-                                <input type="text" name="amount" id="amount" class="form-input" />
-                            </th>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 text-sm text-gray-600">Payee</td>
-                            <th class="px-4 py-3 text-sm font-medium text-gray-900">
-                                <textarea name="remarks" class="form-input" rows="3"></textarea>
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                <h4 class="text-sm font-semibold text-gray-900 mb-2">{{ $selected_office->getDescription() }}</h4>
+                <p class="text-sm text-gray-600">{{ date('F', mktime(0, 0, 0, $month, 1)) . ' ' . $year }}</p>
             </div>
 
-            <div class="grid grid-cols-4 gap-4 pt-4 border-t border-gray-200">
-                <div class="text-center">
-                    <p class="text-xs text-gray-500 mb-1">Allotment Released Quarterly</p>
-                    <p class="text-lg font-semibold text-gray-900 total_allotment_quarter">0.00</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="expense_id_input" class="form-label">Expense ID</label>
+                    <input type="text" name="expense_id" id="expense_id_input" class="form-input" value="{{ $expense_id }}" />
                 </div>
-                <div class="text-center">
-                    <p class="text-xs text-gray-500 mb-1">Total Expenses</p>
-                    <p class="text-lg font-semibold text-gray-900 total_expenses">0.00</p>
+                <div>
+                    <label for="account_code" class="form-label">Account Code</label>
+                    <input type="text" name="account_code" id="account_code" class="form-input" />
                 </div>
-                <div class="text-center">
-                    <p class="text-xs text-gray-500 mb-1">Allotment Available</p>
-                    <p class="text-lg font-semibold text-gray-900 office_allotment_balance">0.00</p>
+            </div>
+
+            <div>
+                <label for="amount" class="form-label">Amount</label>
+                <input type="text" name="amount" id="amount" class="form-input" />
+            </div>
+
+            <div>
+                <label for="remarks" class="form-label">Payee / Remarks</label>
+                <textarea name="remarks" id="remarks" class="form-input" rows="3"></textarea>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-gray-200">
+                <div class="text-center p-3 bg-blue-50 rounded-lg">
+                    <p class="text-xs text-blue-600 mb-1">Allotment Released</p>
+                    <p class="text-lg font-semibold text-blue-900 total_allotment_quarter">0.00</p>
                 </div>
-                <div class="text-center">
-                    <p class="text-xs text-gray-500 mb-1">Ending Balance</p>
-                    <p class="text-lg font-semibold text-gray-900 ending_balance">0.00</p>
+                <div class="text-center p-3 bg-red-50 rounded-lg">
+                    <p class="text-xs text-red-600 mb-1">Total Expenses</p>
+                    <p class="text-lg font-semibold text-red-900 total_expenses">0.00</p>
+                </div>
+                <div class="text-center p-3 bg-green-50 rounded-lg">
+                    <p class="text-xs text-green-600 mb-1">Allotment Available</p>
+                    <p class="text-lg font-semibold text-green-900 office_allotment_balance">0.00</p>
+                </div>
+                <div class="text-center p-3 bg-purple-50 rounded-lg">
+                    <p class="text-xs text-purple-600 mb-1">Ending Balance</p>
+                    <p class="text-lg font-semibold text-purple-900 ending_balance">0.00</p>
                 </div>
             </div>
 

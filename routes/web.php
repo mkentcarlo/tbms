@@ -95,10 +95,33 @@ Route::group(['middleware' => ['get.menu']], function () {
         'destroy'   => 'resource.destroy'
     ]);
 
-    Route::group(['middleware' => ['role:admin']], function () {
-        Route::resource('bread',  'BreadController');   //create BREAD (resource)
-        Route::resource('users',   'UsersController');
+    // Routes accessible by all authenticated users (user, admin, super_admin)
+    Route::group(['middleware' => ['role:user|admin|super_admin']], function () {
+        // Profile Routes (everyone can edit their own profile)
+        Route::get('profile', 'admin\ProfileController@index')->name('profile.index');
+        Route::put('profile', 'admin\ProfileController@update')->name('profile.update');
+        Route::put('profile/password', 'admin\ProfileController@updatePassword')->name('profile.password');
+        Route::post('profile/picture', 'admin\ProfileController@updatePicture')->name('profile.picture');
+        Route::delete('profile/picture', 'admin\ProfileController@removePicture')->name('profile.picture.remove');
 
+        // Dashboard
+        Route::get('/', 'admin\DashboardController@index')->name('dashboard.index');
+        Route::post('/select_office', 'admin\DashboardController@selectOffice')->name('dashboard.select_office');
+        Route::post('/select_date', 'admin\DashboardController@selectDate')->name('dashboard.select_date');
+
+        // Expenses
+        Route::get('expenses', 'admin\ExpenseController@index')->name('expense.index');
+        Route::get('expenses/create',        'admin\ExpenseController@create')->name('expense.create');
+        Route::get('expenses/print_expenses',        'admin\ExpenseController@print_expenses')->name('expense.print_expenses');
+        Route::post('expenses/store',        'admin\ExpenseController@store')->name('expense.store');
+        Route::get('expenses/edit/{id}',        'admin\ExpenseController@edit')->name('expense.edit');
+        Route::get('expenses/delete/{id}',        'admin\ExpenseController@delete')->name('expense.delete');
+        Route::post('expenses/update/{id}',        'admin\ExpenseController@update')->name('expense.update');
+        Route::get('expenses/get_office_allotment_balance',        'admin\ExpenseController@get_office_allotment_balance')->name('expense.get_office_allotment_balance');
+        Route::get('expenses/print/{id}',        'admin\ExpenseController@print')->name('expense.print');
+        Route::get('expenses/autocomplete',        'admin\ExpenseController@autocomplete')->name('expense.autocomplete');
+
+        // Offices
         Route::get('offices',        'admin\OfficesController@index')->name('office.index');
         Route::post('offices/store',        'admin\OfficesController@store')->name('office.store');
         Route::post('offices/store_ooe',        'admin\OfficesController@store_ooe')->name('office.store_ooe');
@@ -106,7 +129,6 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::post('offices/update_ooe/{id}',        'admin\OfficesController@update_ooe')->name('office.update_ooe');
         Route::get('offices/create',        'admin\OfficesController@create')->name('office.create');
         Route::get('offices/create_ooe',        'admin\OfficesController@create_ooe')->name('office.create_ooe');
-        
         Route::get('offices/edit/{id}',        'admin\OfficesController@edit')->name('office.edit');
         Route::get('offices/edit_ooe/{id}',        'admin\OfficesController@edit_ooe')->name('office.edit_ooe');
         Route::get('offices/delete/{id}',        'admin\OfficesController@delete')->name('office.delete');
@@ -116,58 +138,62 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::get('offices/categories_delete/{id}',        'admin\OfficesController@categories_delete')->name('office.categories.delete');
         Route::get('offices/expense_classes',        'admin\OfficesController@expense_classes')->name('office.expense_classes');
         Route::get('offices/object_expenditures',        'admin\OfficesController@object_expenditures')->name('office.object_expenditures');
-
-        // These are routes for office groups
         Route::get('offices/office_groups',        'admin\OfficesController@office_groups')->name('office.office_groups');
         Route::get('offices/create_office_group',        'admin\OfficesController@create_office_group')->name('office.create_office_group');
         Route::post('offices/store_office_group',        'admin\OfficesController@store_office_group')->name('office.store_office_group');
         Route::get('offices/edit_office_group/{id}',        'admin\OfficesController@edit_office_group')->name('office.edit_office_group');
         Route::post('offices/update_office_group/{id}',        'admin\OfficesController@update_office_group')->name('office.update_office_group');
         Route::get('offices/delete_office_group/{id}',        'admin\OfficesController@delete_office_group')->name('office.delete_office_group');
-
-        // These are routes for main offices
         Route::post('offices/store_main_office',        'admin\OfficesController@store_main_office')->name('office.store_main_office');
         Route::get('offices/create_main_office',        'admin\OfficesController@create_main_office')->name('office.create_main_office');
         Route::get('offices/delete_main_office/{id}',        'admin\OfficesController@delete_main_office')->name('office.delete_main_office');
         Route::get('offices/edit_main_office/{id}',        'admin\OfficesController@edit_main_office')->name('office.edit_main_office');
         Route::post('offices/update_main_office/{id}',        'admin\OfficesController@update_main_office')->name('office.update_main_office');
-        
         Route::get('offices/expense_classes/load_ooes/{parent_id}',        'admin\OfficesController@load_ooes')->name('office.expense_classes.load_ooes');
         Route::get('offices/load_tags',        'admin\OfficesController@load_tags')->name('office.load_tags');
         Route::get('offices/load_expense_classes/{category_id}',        'admin\OfficesController@load_expense_classes')->name('office.load_expense_classes');
 
+        // Allotments
         Route::get('allotments', 'admin\AllotmentController@index')->name('allotment.index');
         Route::get('allotments/create',        'admin\AllotmentController@create')->name('allotment.create');
         Route::post('allotments/store',        'admin\AllotmentController@store')->name('allotment.store');
         Route::get('allotments/edit/{id}',        'admin\AllotmentController@edit')->name('allotment.edit');
         Route::get('allotments/delete/{id}',        'admin\AllotmentController@delete')->name('allotment.delete');
         Route::post('allotments/update/{id}',        'admin\AllotmentController@update')->name('allotment.update');
-        Route::get('allotments/delete/{id}',        'admin\AllotmentController@delete')->name('allotment.delete');
 
-        Route::get('/', 'admin\DashboardController@index')->name('dashboard.index');
-        Route::post('/select_office', 'admin\DashboardController@selectOffice')->name('dashboard.select_office');
-        Route::post('/select_date', 'admin\DashboardController@selectDate')->name('dashboard.select_date');
-
-        Route::get('expenses', 'admin\ExpenseController@index')->name('expense.index');
-        Route::get('expenses/create',        'admin\ExpenseController@create')->name('expense.create');
-        Route::get('expenses/print_expenses',        'admin\ExpenseController@print_expenses')->name('expense.print_expenses');
-        Route::post('expenses/store',        'admin\ExpenseController@store')->name('expense.store');
-        Route::get('expenses/edit/{id}',        'admin\ExpenseController@edit')->name('expense.edit');
-        Route::get('expenses/delete/{id}',        'admin\ExpenseController@delete')->name('expense.delete');
-        Route::post('expenses/update/{id}',        'admin\ExpenseController@update')->name('expense.update');
-        Route::get('expenses/delete/{id}',        'admin\ExpenseController@delete')->name('expense.delete');
-        Route::get('expenses/get_office_allotment_balance',        'admin\ExpenseController@get_office_allotment_balance')->name('expense.get_office_allotment_balance');
-        Route::get('expenses/print/{id}',        'admin\ExpenseController@print')->name('expense.print');
-
+        // Reports
         Route::get('reports', 'admin\ReportsController@index')->name('reports.index');
         Route::get('reports/export', 'admin\ReportsController@export')->name('reports.export');
 
-        Route::resource('roles',        'RolesController');
+        // Media
+        Route::prefix('media')->group(function () {
+            Route::get('/',                 'MediaController@index')->name('media.folder.index');
+            Route::get('/folder/store',     'MediaController@folderAdd')->name('media.folder.add');
+            Route::post('/folder/update',   'MediaController@folderUpdate')->name('media.folder.update');
+            Route::get('/folder',           'MediaController@folder')->name('media.folder');
+            Route::post('/folder/move',     'MediaController@folderMove')->name('media.folder.move');
+            Route::post('/folder/delete',   'MediaController@folderDelete')->name('media.folder.delete');
+            Route::post('/file/store',      'MediaController@fileAdd')->name('media.file.add');
+            Route::get('/file',             'MediaController@file');
+            Route::post('/file/delete',     'MediaController@fileDelete')->name('media.file.delete');
+            Route::post('/file/update',     'MediaController@fileUpdate')->name('media.file.update');
+            Route::post('/file/move',       'MediaController@fileMove')->name('media.file.move');
+            Route::post('/file/cropp',      'MediaController@cropp');
+            Route::get('/file/copy',        'MediaController@fileCopy')->name('media.file.copy');
+        });
+
         Route::resource('mail',        'MailController');
         Route::get('prepareSend/{id}',        'MailController@prepareSend')->name('prepareSend');
         Route::post('mailSend/{id}',        'MailController@send')->name('mailSend');
-        Route::get('/roles/move/move-up',      'RolesController@moveUp')->name('roles.up');
-        Route::get('/roles/move/move-down',    'RolesController@moveDown')->name('roles.down');
+    });
+
+    // Routes accessible by admin and super_admin only
+    Route::group(['middleware' => ['role:admin|super_admin']], function () {
+        // Users Management
+        Route::resource('users',   'UsersController');
+        Route::resource('bread',  'BreadController');
+
+        // Menu Management
         Route::prefix('menu/element')->group(function () { 
             Route::get('/',             'MenuElementController@index')->name('menu.index');
             Route::get('/move-up',      'MenuElementController@moveUp')->name('menu.up');
@@ -188,21 +214,32 @@ Route::group(['middleware' => ['get.menu']], function () {
             Route::post('/update',  'MenuController@update')->name('menu.menu.update');
             Route::get('/delete',   'MenuController@delete')->name('menu.menu.delete');
         });
-        Route::prefix('media')->group(function () {
-            Route::get('/',                 'MediaController@index')->name('media.folder.index');
-            Route::get('/folder/store',     'MediaController@folderAdd')->name('media.folder.add');
-            Route::post('/folder/update',   'MediaController@folderUpdate')->name('media.folder.update');
-            Route::get('/folder',           'MediaController@folder')->name('media.folder');
-            Route::post('/folder/move',     'MediaController@folderMove')->name('media.folder.move');
-            Route::post('/folder/delete',   'MediaController@folderDelete')->name('media.folder.delete');;
+    });
 
-            Route::post('/file/store',      'MediaController@fileAdd')->name('media.file.add');
-            Route::get('/file',             'MediaController@file');
-            Route::post('/file/delete',     'MediaController@fileDelete')->name('media.file.delete');
-            Route::post('/file/update',     'MediaController@fileUpdate')->name('media.file.update');
-            Route::post('/file/move',       'MediaController@fileMove')->name('media.file.move');
-            Route::post('/file/cropp',      'MediaController@cropp');
-            Route::get('/file/copy',        'MediaController@fileCopy')->name('media.file.copy');
-        });
+    // Routes accessible by super_admin only
+    Route::group(['middleware' => ['role:super_admin']], function () {
+        // Settings
+        Route::get('settings', 'admin\ProfileController@settings')->name('settings.index');
+        Route::put('settings', 'admin\ProfileController@updateSettings')->name('settings.update');
+        Route::delete('settings/logo', 'admin\ProfileController@removeLogo')->name('settings.logo.remove');
+        Route::delete('settings/background', 'admin\ProfileController@removeBackground')->name('settings.background.remove');
+
+        // Roles Management
+        Route::resource('roles',        'RolesController');
+        Route::get('/roles/move/move-up',      'RolesController@moveUp')->name('roles.up');
+        Route::get('/roles/move/move-down',    'RolesController@moveDown')->name('roles.down');
+
+        // Database Backup Routes
+        Route::get('backups', 'admin\BackupController@index')->name('backup.index');
+        Route::post('backups/create', 'admin\BackupController@create')->name('backup.create');
+        Route::get('backups/download/{filename}', 'admin\BackupController@download')->name('backup.download');
+        Route::delete('backups/delete/{filename}', 'admin\BackupController@delete')->name('backup.delete');
+        Route::post('backups/restore/{filename}', 'admin\BackupController@restore')->name('backup.restore');
+
+        // System Update Routes
+        Route::get('updates', 'admin\UpdateController@index')->name('update.index');
+        Route::post('updates/check', 'admin\UpdateController@check')->name('update.check');
+        Route::post('updates/apply', 'admin\UpdateController@apply')->name('update.apply');
+        Route::get('updates/status', 'admin\UpdateController@status')->name('update.status');
     });
 });

@@ -1,3 +1,13 @@
+@php
+    use App\Models\AppSetting;
+    $countryName = AppSetting::countryName();
+    $provinceName = AppSetting::provinceName();
+    $municipalityName = AppSetting::municipalityName();
+    $certifyingOfficerName = AppSetting::certifyingOfficerName();
+    $certifyingOfficerTitle = AppSetting::certifyingOfficerTitle();
+    $budgetOfficerName = AppSetting::budgetOfficerName();
+    $budgetOfficerTitle = AppSetting::budgetOfficerTitle();
+@endphp
 <html>
     <head>
         <title>Print {{$expense->account_code}}</title>
@@ -82,9 +92,9 @@
         </div>
         <div class="print-container">
             <div class="head">
-                Republic of the Philippines <br>
-                <strong>PROVINCE OF AGUSAN DEL SUR</strong><br>
-                <strong>Municipality of Talacogon</strong>
+                {{ $countryName }} <br>
+                <strong>{{ $provinceName }}</strong><br>
+                <strong>{{ $municipalityName }}</strong>
                 <p class="date">Date: {{format_date($expense->created_at)}}</p>
             </div>
             <div class="content">
@@ -151,14 +161,14 @@
                     </div>
                     <div class="col-half">
                         <p>CERTIFIED CORRECT:</p>
-                        <p><strong>MARILOU P. AZUCENA,MM</strong><br>
-                        Budget Officer III</p>
+                        <p><strong>{{ $certifyingOfficerName }}</strong><br>
+                        {{ $certifyingOfficerTitle }}</p>
                     </div>
                     <div class="clearfix">
                         <p class="text-center">
                             <br>
-                            <strong>GWENDOLYN &nbsp;A.&nbsp; CLAROS, REB,MEM</strong> <br>
-                            Municipal Budget Officer<br><br>
+                            <strong>{{ $budgetOfficerName }}</strong> <br>
+                            {{ $budgetOfficerTitle }}<br><br>
                         </p>
                     </div>
                 </div>
@@ -169,9 +179,9 @@
         <br>
         <div class="print-container">
             <div class="head">
-                Republic of the Philippines <br>
-                <strong>PROVINCE OF AGUSAN DEL SUR</strong><br>
-                <strong>Municipality of Talacogon</strong>
+                {{ $countryName }} <br>
+                <strong>{{ $provinceName }}</strong><br>
+                <strong>{{ $municipalityName }}</strong>
                 <p class="date">Date: {{format_date($expense->created_at)}}</p>
             </div>
             <div class="content">
@@ -238,14 +248,14 @@
                     </div>
                     <div class="col-half">
                         <p>CERTIFIED CORRECT:</p>
-                        <p><strong>MARILOU P. AZUCENA,MM</strong><br>
-                        Budget Officer III</p>
+                        <p><strong>{{ $certifyingOfficerName }}</strong><br>
+                        {{ $certifyingOfficerTitle }}</p>
                     </div>
                     <div class="clearfix">
                         <p class="text-center">
                             <br>
-                            <strong>GWENDOLYN &nbsp;A.&nbsp; CLAROS, REB,MEM</strong> <br>
-                            Municipal Budget Officer
+                            <strong>{{ $budgetOfficerName }}</strong> <br>
+                            {{ $budgetOfficerTitle }}
                         </p>
                     </div>
                 </div>
